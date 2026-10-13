@@ -5,7 +5,7 @@
 
 [![Made with Tableau](https://img.shields.io/badge/Data%20Viz-Tableau-E97627?style=flat-square&logo=tableau&logoColor=white)](https://www.tableau.com/)
 [![Status](https://img.shields.io/badge/status-active-brightgreen?style=flat-square)]()
-[![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)]()
+[![Course Project](https://img.shields.io/badge/type-academic%20project-lightgrey?style=flat-square)]()
 
 ---
 
@@ -80,6 +80,6 @@ https://<your-github-username>.github.io/price-of-arrival-data-visualization/
 
 This project was developed as part of an iterative reflective journal process, incorporating structured instructor feedback on chart selection, colour discipline, and scale representation across successive revisions.
 
-## License
+## Copyright
 
-MIT
+© 2026 DataLens. All rights reserved. This work was produced for academic assessment; please do not reproduce or redistribute without permission.
