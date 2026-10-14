@@ -521,10 +521,10 @@ p{margin:0}
   <div class="kicker"><b>02 · Data &amp; Method</b> Narrative arc · ten scenes, one flight path</div>
   <h2>Mei's <em>journey</em> to Sydney</h2>
   <div class="arcwrap" id="arc"></div>
-  <div class="chain f" data-s="11">Headline <i>→</i> Question <i>→</i> Evidence <i>→</i> Reframing <i>→</i> Action <i>→</i> Decision <small>insight order E1 → E4 → E2 → E3</small></div>
+  <div class="chain f" data-s="5">Headline <i>→</i> Question <i>→</i> Evidence <i>→</i> Reframing <i>→</i> Action <i>→</i> Decision <small>insight order E1 → E4 → E2 → E3</small></div>
   <div class="notes">
     <p>The structure is a four-stage arc: Setting, Rising insights, the Aha moment, then Decision and next steps.</p>
-    <p>Click through and the scenes land one at a time, in order, the flight path extending with each. Tension rises as Mei looks past the headline at where, when and how much; it peaks at Scene 8, when she realises these can't be judged separately; then it resolves into a plan, and she lands in Sydney.</p>
+    <p>Click through in four steps: Scenes 1 and 2 (Setting) appear together, then Scenes 3 to 7 (Rising insights) all at once, then Scene 8 (the Aha moment), then Scenes 9 and 10 (Decision and next steps), the flight path extending with each. Tension rises as Mei looks past the headline at where, when and how much; it peaks at Scene 8, when she realises these can't be judged separately; then it resolves into a plan, and she lands in Sydney.</p>
   </div>
 </section>
 
@@ -892,18 +892,19 @@ document.getElementById('legendbar').style.background=`linear-gradient(90deg,${[
 /* ---------- narrative arc ---------- */
 (function(){
   const box=document.getElementById('arc');const W=1424,H=560;
+  const stepOf=n=>n<=2?1:n<=7?2:n==8?3:4; // scene number -> click step: S1-2 | S3-7 | S8 | S9-10
   const pts=[[100,470],[215,440],[360,400],[505,370],[650,330],[795,295],[940,260],[1090,170],[1225,290],[1340,430]];
   const imgs=[IMG['s1'],IMG['s2'],IMG['s3'],IMG['s4'],IMG['s5'],IMG['s6'],IMG['s7'],IMG['s8'],IMG['s9'],IMG['s10']];
   let s=`<svg viewBox="0 0 ${W} ${H}" aria-hidden="true">`;
   for(let i=0;i<pts.length-1;i++){const p0=pts[i-1]||pts[i],p1=pts[i],p2=pts[i+1],p3=pts[i+2]||p2;
     const d=`M${p1.join(' ')} C${p1[0]+(p2[0]-p0[0])/6} ${p1[1]+(p2[1]-p0[1])/6} ${p2[0]-(p3[0]-p1[0])/6} ${p2[1]-(p3[1]-p1[1])/6} ${p2[0]} ${p2[1]}`;
-    s+=`<g class="f" data-s="${i+2}"><path class="draw" pathLength="1" d="${d}" fill="none" stroke="${C.amber}" stroke-width="3" stroke-dasharray="1" style="transition-duration:.9s"/></g>`}
-  const labels=[[1,'Setting',140],[3,'Rising insights',650],[8,'Aha',1090],[9,'Decision & next steps',1300]];
-  labels.forEach(([p,t,x])=>{s+=`<g class="f" data-s="${p}"><text x="${x}" y="${H-14}" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="14" letter-spacing="2" fill="${p==8?C.amber:C.mute}">${t.toUpperCase()}</text></g>`});
-  pts.forEach((p,i)=>{s+=`<g class="f" data-s="${i+1}"><circle cx="${p[0]}" cy="${p[1]}" r="${i==7?9:6}" fill="${i==7?C.amber:C.ink}" stroke="${C.amber}" stroke-width="2.5"/></g>`});
-  s+=`<g class="f" data-s="10"><path d="M1340 430 l26 6 l-26 6 l6 -6z" fill="${C.amber}" transform="rotate(30 1340 430)"/></g></svg>`;
+    s+=`<g class="f" data-s="${stepOf(i+2)}"><path class="draw" pathLength="1" d="${d}" fill="none" stroke="${C.amber}" stroke-width="3" stroke-dasharray="1" style="transition-duration:.9s"/></g>`}
+  const labels=[[1,'Setting',140],[2,'Rising insights',650],[3,'Aha',1090],[4,'Decision & next steps',1300]];
+  labels.forEach(([p,t,x])=>{s+=`<g class="f" data-s="${p}"><text x="${x}" y="${H-14}" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="14" letter-spacing="2" fill="${p==3?C.amber:C.mute}">${t.toUpperCase()}</text></g>`});
+  pts.forEach((p,i)=>{s+=`<g class="f" data-s="${stepOf(i+1)}"><circle cx="${p[0]}" cy="${p[1]}" r="${i==7?9:6}" fill="${i==7?C.amber:C.ink}" stroke="${C.amber}" stroke-width="2.5"/></g>`});
+  s+=`<g class="f" data-s="4"><path d="M1340 430 l26 6 l-26 6 l6 -6z" fill="${C.amber}" transform="rotate(30 1340 430)"/></g></svg>`;
   pts.forEach((p,i)=>{const aha=i==7,w=aha?176:148,hh=aha?122:104;
-    s+=`<div class="thumb f${aha?' aha':''}" data-s="${i+1}" style="left:${(p[0]-w/2)/W*100}%;top:${p[1]-hh-22}px"><img src="${imgs[i]}" alt=""><b>S${i+1}</b></div>`});
+    s+=`<div class="thumb f${aha?' aha':''}" data-s="${stepOf(i+1)}" style="left:${(p[0]-w/2)/W*100}%;top:${p[1]-hh-22}px"><img src="${imgs[i]}" alt=""><b>S${i+1}</b></div>`});
   box.innerHTML=s;
 })();
 
