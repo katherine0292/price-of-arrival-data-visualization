@@ -1,0 +1,1104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Price of Arrival</title>
+<style>
+/*FONTS*/
+:root{
+  --ink:#F6F3FC; --ink2:#FCFAFF; --ink3:#EAE4F8; --line:#DCD4EF;
+  --paper:#38315A; --mute:#6F6894; --dim:#9D96BC; --deep:#37305C;
+  --lav:#8B7FE8; --pink:#E578A9; --coral:#D95F7E; --blue:#6FA3E0;
+  --fd:'Shantell Sans','Figtree',system-ui,sans-serif;
+  --fb:'Figtree','Shantell Sans',system-ui,sans-serif;
+  --fm:'IBM Plex Mono',ui-monospace,monospace;
+  --fh:'Caveat',cursive;
+}
+html,body{margin:0;height:100%;background:#1c1735;overflow:hidden}
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;
+  font-family:var(--fd);color:var(--paper);
+  background:radial-gradient(1300px 800px at 85% -10%,#E6DCFA 0%,transparent 60%),radial-gradient(1000px 700px at -10% 110%,#EEE5FB 0%,transparent 60%),var(--ink)}
+.a{position:absolute}
+.scene{position:absolute;inset:0;opacity:0;visibility:hidden}
+img{display:block}
+.card{background:var(--ink2);border:2px solid var(--line);border-radius:22px;box-shadow:0 18px 40px -22px #37305C55}
+.mono{font-family:var(--fm)}
+.kick{font-family:var(--fm);font-size:18px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.chip{display:inline-block;font-family:var(--fm);font-weight:600;font-size:16px;letter-spacing:.06em;padding:4px 10px;border-radius:6px;border:1.5px solid currentColor}
+.cap{font-family:var(--fm);font-size:16px;line-height:1.4;color:var(--mute);letter-spacing:.01em}
+.cap b{color:var(--paper);font-weight:600}
+h1,h2,h3{margin:0;font-weight:800;line-height:1.02}
+.em{color:var(--pink)}
+
+/* clouds */
+.cloud{position:absolute;opacity:.55}
+
+/* HUD */
+#hud{position:absolute;left:0;right:0;top:0;height:78px;display:flex;align-items:center;justify-content:space-between;padding:0 60px;box-sizing:border-box;z-index:50}
+#brand{font-family:var(--fm);font-size:17px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);display:flex;gap:10px;align-items:center}
+#acts{display:flex;gap:10px}
+#acts span{font-family:var(--fm);font-size:15px;letter-spacing:.1em;text-transform:uppercase;padding:7px 14px;border-radius:999px;color:var(--dim);border:1.5px solid var(--line);background:#ffffff80}
+#acts span.on{background:var(--deep);color:#fff;border-color:var(--deep)}
+
+/* subtitles */
+#subs{position:absolute;left:0;right:0;top:912px;display:flex;justify-content:center;z-index:60;pointer-events:none}
+#subtxt{max-width:1540px;text-align:center;font-family:var(--fb);font-weight:600;font-size:37px;line-height:1.28;color:#fff;background:rgba(40,33,72,.9);padding:12px 30px 14px;border-radius:16px;box-shadow:0 10px 30px -10px #0006}
+
+/* progress */
+#prog{position:absolute;left:60px;right:60px;top:1036px;height:30px;z-index:55}
+#prog .rail{position:absolute;left:0;right:0;top:6px;height:4px;border-radius:2px;background:var(--line)}
+#prog .fill{position:absolute;left:0;top:6px;height:4px;border-radius:2px;background:var(--pink);width:0}
+#prog .pl{position:absolute;top:-6px;width:28px;height:28px;margin-left:-14px}
+#prog .tick{position:absolute;top:16px;font-family:var(--fm);font-size:12px;letter-spacing:.1em;color:var(--dim);text-transform:uppercase}
+
+/* flap board */
+.flaprow{display:flex;gap:8px}
+.flap{position:relative;display:flex;align-items:center;justify-content:center;border-radius:7px;color:#fff;font-family:var(--fm);font-weight:600;
+  background:linear-gradient(#4A4178 0 49.4%,#251F48 49.6% 50.4%,#3A3266 50.6% 100%);box-shadow:0 6px 14px -6px #1d173888, inset 0 1px 0 #ffffff22}
+.flap.p{color:#F7B3CF}
+.flap.small{border-radius:5px}
+
+/* opening */
+.clip{width:380px;padding:16px 20px 18px;background:#fff;border-radius:10px;box-shadow:0 14px 30px -16px #37305C66;border:1px solid var(--line)}
+.clip .src{font-family:var(--fm);font-size:13px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase;border-bottom:2px solid var(--ink3);padding-bottom:6px;margin-bottom:10px}
+.clip .hl{font-family:var(--fb);font-weight:800;font-size:27px;line-height:1.15;color:var(--deep)}
+.clip .hl b{color:var(--coral)}
+.clip .ln{height:8px;border-radius:4px;background:var(--ink3);margin-top:10px}
+
+/* mei */
+.pass{width:800px;height:470px;overflow:hidden;border-radius:26px;background:#fff;box-shadow:0 30px 60px -28px #37305C88;border:2px solid var(--line)}
+.pass .hd{height:70px;background:var(--deep);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font-family:var(--fm);letter-spacing:.16em;font-size:18px}
+.pass .hd b{color:#F7B3CF;font-weight:600}
+.fld dt{font-family:var(--fm);font-size:14px;letter-spacing:.16em;color:var(--dim);text-transform:uppercase}
+.fld dd{margin:4px 0 0;font-size:34px;font-weight:700;color:var(--deep)}
+.stamp{border:5px solid var(--coral);color:var(--coral);border-radius:10px;font-family:var(--fm);font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:6px 16px;background:#ffffffcc}
+.tag4{width:800px;height:112px;background:#fff;border:2px solid var(--line);border-radius:14px 56px 56px 14px;display:flex;align-items:center;gap:22px;padding:0 34px 0 26px;box-sizing:border-box;box-shadow:0 14px 30px -18px #37305C66;transform-origin:20px 56px}
+.tag4 .hole{width:22px;height:22px;border-radius:50%;border:3px solid var(--line);background:var(--ink);flex:none}
+.tag4 .q{font-size:31px;font-weight:700;color:var(--deep);flex:1;white-space:nowrap}
+.tag4 .act{font-family:var(--fm);font-size:13px;letter-spacing:.08em;color:var(--mute);text-transform:uppercase;text-align:right;width:110px;line-height:1.3}
+
+/* noise */
+.bub{background:#fff;border:2px solid var(--line);border-radius:26px;padding:20px 26px;box-shadow:0 16px 30px -18px #37305C66}
+.bub .who{font-family:var(--fm);font-size:15px;letter-spacing:.14em;color:var(--mute);text-transform:uppercase;margin-bottom:8px}
+.bub .say{font-size:34px;font-weight:700;line-height:1.15;color:var(--deep)}
+.bub .fn{margin-top:10px;font-family:var(--fm);font-size:13px;color:var(--dim);letter-spacing:.04em}
+.caprow{display:grid;grid-template-columns:150px 1fr;gap:18px;padding:12px 0;border-top:1.5px dashed var(--line);font-size:24px}
+.caprow span{font-family:var(--fm);font-size:16px;letter-spacing:.14em;color:var(--blue);font-weight:600;padding-top:5px}
+
+/* data */
+.dcard{width:326px;height:236px;overflow:hidden;border-radius:18px;background:#fff;border:2px solid var(--line);box-shadow:0 16px 30px -18px #37305C66}
+.dcard .h{background:var(--deep);color:#fff;font-family:var(--fm);font-size:14px;letter-spacing:.12em;text-transform:uppercase;padding:12px 16px;display:flex;justify-content:space-between}
+.dcard .h b{color:#F7B3CF}
+.dcard .b{padding:14px 18px}
+.dcard h5{margin:0 0 6px;font-size:24px;color:var(--deep)}
+.dcard p{margin:0;font-family:var(--fb);font-size:18px;line-height:1.3;color:var(--mute)}
+.dcard .fig{margin-top:12px;font-family:var(--fm);font-size:15px;color:var(--pink);font-weight:600}
+.mchip{width:560px;padding:16px 22px;box-sizing:border-box;border-radius:16px;background:#fff;border:2px solid var(--line);font-size:24px;font-weight:600;color:var(--deep);display:flex;gap:16px;align-items:center}
+.mchip i{font-style:normal;font-family:var(--fm);font-size:18px;color:#fff;background:var(--lav);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;flex:none}
+.qchip{width:410px;height:66px;box-sizing:border-box;border-radius:999px;background:#fff;border:2px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 24px;font-size:26px;font-weight:700;color:var(--deep)}
+.qchip b{font-family:var(--fm);font-size:17px;color:#fff;background:var(--deep);padding:4px 10px;border-radius:999px}
+
+/* act header */
+.qh{display:flex;align-items:center;gap:26px;transform-origin:0 0;white-space:nowrap}
+.qh .qt{font-size:44px;font-weight:800;color:var(--deep)}
+
+/* charts */
+svg text{font-family:var(--fm)}
+.ax{font-size:17px;fill:var(--mute)}
+.lbl{font-size:20px;font-weight:600}
+.big-lbl{font-size:46px;font-weight:600}
+.grid{stroke:#DCD4EF;stroke-width:1.5}
+.base{stroke:#9D96BC;stroke-width:2;stroke-dasharray:6 6}
+.chead{display:flex;justify-content:space-between;font-family:var(--fm);font-size:16px;letter-spacing:.08em;color:var(--mute);text-transform:uppercase;padding:18px 26px 0}
+.imgcard{overflow:hidden;border-radius:22px;border:2px solid var(--line);box-shadow:0 18px 40px -22px #37305C66;background:#fff}
+.imgcard img{width:100%;height:100%;object-fit:cover}
+.sid{position:absolute;left:14px;top:14px;font-family:var(--fm);font-weight:600;font-size:15px;background:var(--deep);color:#fff;padding:4px 10px;border-radius:6px}
+
+/* heat */
+#heat{display:grid;grid-template-columns:240px repeat(13,78px);grid-auto-rows:38px;gap:0}
+#heat .ch{font-family:var(--fm);font-size:14px;color:var(--mute);display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;height:46px;box-sizing:border-box;text-align:center;line-height:1.1}
+#heat .rh{font-family:var(--fb);font-weight:600;font-size:17px;color:var(--paper);display:flex;align-items:center;justify-content:flex-end;padding-right:14px;white-space:nowrap}
+#heat .c{margin:2px;border-radius:6px;font-family:var(--fm);font-size:13px;display:flex;align-items:center;justify-content:center;position:relative}
+#heat .c.e{background:repeating-linear-gradient(45deg,#EFEAF9 0 5px,#F7F4FC 5px 10px)}
+#heat .c.ring{box-shadow:0 0 0 4px var(--deep);z-index:2}
+
+/* visa stamps */
+.vst{width:770px;height:118px;box-sizing:border-box;border:4px double var(--coral);border-radius:14px;background:#ffffffe6;display:flex;align-items:center;gap:26px;padding:0 26px}
+.vst b{font-family:var(--fm);font-size:36px;color:var(--coral);font-weight:600;letter-spacing:.06em;white-space:nowrap}
+.vst span{font-size:28px;font-weight:700;color:var(--deep);line-height:1.15}
+
+/* sector bars */
+.bn{width:250px;font-size:30px;font-weight:800;color:var(--deep)}
+.bn small{display:block;font-family:var(--fm);font-size:15px;font-weight:500;color:var(--mute);margin-top:4px}
+.seg{position:absolute;top:0;height:70px;border-radius:10px;display:flex;align-items:center;padding:0 14px;box-sizing:border-box;font-family:var(--fm);font-size:18px;font-weight:600;color:#fff;overflow:hidden;white-space:nowrap}
+
+/* lens / plan */
+.lens{width:360px;height:200px;box-sizing:border-box;padding:20px 22px;border-radius:20px;background:#fff;border:2px solid var(--line);box-shadow:0 18px 34px -20px #37305C77}
+.lens b{display:block;font-size:30px;color:var(--deep);margin:10px 0 6px}
+.lens p{margin:0;font-family:var(--fb);font-size:21px;line-height:1.3;color:var(--mute)}
+.pcard{width:410px;height:215px;box-sizing:border-box;padding:20px 22px;border-radius:20px;background:#fff;border:2px solid var(--line);box-shadow:0 18px 34px -20px #37305C77}
+.pcard .k{font-family:var(--fm);font-size:15px;letter-spacing:.14em;color:var(--pink);font-weight:600;text-transform:uppercase}
+.pcard b{display:block;font-size:28px;white-space:nowrap;color:var(--deep);margin:8px 0 8px}
+.pcard p{margin:0;font-family:var(--fb);font-size:19px;line-height:1.3;color:var(--mute)}
+.pcard .fg{position:absolute;right:20px;bottom:16px;font-family:var(--fm);font-size:14px;color:var(--lav);font-weight:600}
+.plist{box-sizing:border-box;padding:18px 26px;border-radius:20px;height:150px}
+.plist h4{margin:0 0 10px;font-family:var(--fm);font-size:17px;letter-spacing:.12em;text-transform:uppercase}
+.plist .it{display:inline-block;font-size:25px;font-weight:700;margin:0 8px 8px 0;padding:6px 14px;border-radius:999px;background:#fff}
+
+/* overlay */
+#play[hidden]{display:none!important}
+#play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:22px;background:#1c1735cc;z-index:100;cursor:pointer;font-family:var(--fd);color:#fff}
+#play .btn{width:150px;height:150px;border-radius:50%;background:var(--pink);display:flex;align-items:center;justify-content:center;box-shadow:0 20px 50px -10px #E578A9aa}
+#play p{margin:0;font-size:30px;font-weight:700}
+#play small{font-family:var(--fm);font-size:18px;letter-spacing:.1em;color:#D9D2F2}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- ambient clouds -->
+  <div id="clouds"></div>
+
+  <!-- HUD -->
+  <div id="hud">
+    <div id="brand"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M21.5 15.5v-2l-8-5v-5.5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5l-8 5v2l8-2.5v5.5l-2 1.5v1.5l3.5-1 3.5 1v-1.5l-2-1.5v-5.5l8 2.5z" fill="#E578A9"/></svg>DataLens · The Price of Arrival</div>
+    <div id="acts"><span data-a="1">01 Problem</span><span data-a="2">02 Data &amp; Method</span><span data-a="3">03 Insights</span><span data-a="4">04 Plan</span></div>
+  </div>
+
+  <!-- ===================== OPEN ===================== -->
+  <div class="scene" id="sc-open">
+    <svg class="a" id="opath" style="left:0;top:0" width="1920" height="1080"><path id="opathd" d="M-120 300 C 400 120, 1100 380, 2050 110" fill="none" stroke="#E578A9" stroke-width="3" stroke-dasharray="2 14" stroke-linecap="round" opacity=".55"/></svg>
+    <div class="a" id="oplane" style="left:0;top:0;width:70px;height:70px;margin:-35px 0 0 -35px"><svg viewBox="0 0 24 24" width="70" height="70"><path d="M21.5 15.5v-2l-8-5v-5.5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5l-8 5v2l8-2.5v5.5l-2 1.5v1.5l3.5-1 3.5 1v-1.5l-2-1.5v-5.5l8 2.5z" fill="#E578A9" transform="rotate(90 12 12)"/></svg></div>
+    <div id="clips"></div>
+    <div class="a" id="oboard" style="left:0;top:0;width:1920px;height:1080px;transform-origin:960px 433px">
+      <div class="a" style="left:414px;top:330px"><div class="flaprow" id="of1"></div></div>
+      <div class="a" style="left:414px;top:440px"><div class="flaprow" id="of2"></div></div>
+    </div>
+    <div class="a" id="otitle" style="left:0;width:1920px;top:470px;text-align:center">
+      <h1 style="font-size:132px;color:var(--deep)">The Price <span class="em">of Arrival</span></h1>
+      <p style="margin:22px 0 0;font-size:34px;color:var(--mute);font-weight:500">A data story about one person deciding whether Sydney is still worth it.</p>
+    </div>
+    <div class="a" id="oteam" style="left:0;width:1920px;top:760px;display:flex;justify-content:center;gap:16px">
+      <span class="chip" style="color:var(--deep)">TEAM DATALENS</span><span class="chip" style="color:var(--mute)">KATHERINE LIN</span><span class="chip" style="color:var(--mute)">JIAJUN XU</span><span class="chip" style="color:var(--mute)">YUCHENG LIU</span><span class="chip" style="color:var(--lav)">UTS · DATA-DRIVEN STORYTELLING</span>
+    </div>
+  </div>
+
+  <!-- ===================== MEI ===================== -->
+  <div class="scene" id="sc-mei">
+    <div class="a pass" id="pass" style="left:120px;top:200px;transform-origin:400px 235px">
+      <div class="hd"><span>BOARDING PASS</span><b>DLX 2026 · ONE WAY?</b></div>
+      <img data-img="meiface" class="a" style="left:34px;top:104px;width:190px;height:200px;object-fit:cover;border-radius:20px;border:2px solid var(--line)">
+      <div class="a" style="left:256px;top:96px"><div class="kick" style="font-size:14px">Passenger</div><div style="font-size:78px;font-weight:800;color:var(--deep);line-height:1">MEI</div></div>
+      <dl class="a fld" style="left:256px;top:214px;margin:0;display:grid;grid-template-columns:200px 220px;gap:18px 20px">
+        <div><dt>Age</dt><dd>23</dd></div><div><dt>To</dt><dd>SYD</dd></div>
+        <div><dt>Course</dt><dd>Master's</dd></div><div><dt>Status</dt><dd style="color:var(--mute)">—</dd></div>
+      </dl>
+      <div class="a" style="left:640px;top:70px;bottom:0;border-left:3px dashed var(--line)"></div>
+      <div class="a" style="left:660px;top:110px;width:120px;text-align:center"><div class="kick" style="font-size:13px">Gate</div><div style="font-size:70px;font-weight:800;color:var(--pink)">?</div><div class="kick" style="font-size:13px;margin-top:24px">Seat</div><div style="font-size:44px;font-weight:800;color:var(--deep)">23A</div></div>
+      <div class="a mono" style="left:34px;bottom:26px;font-size:15px;letter-spacing:.14em;color:var(--dim)">PRIMARY READER · PROSPECTIVE INTERNATIONAL STUDENT</div>
+      <div class="a stamp" id="undec" style="left:420px;top:318px;font-size:30px;transform-origin:50% 50%">UNDECIDED</div>
+    </div>
+    <div class="a kick" id="mq" style="left:1000px;top:178px">Mei's four questions</div>
+    <div id="tags"></div>
+    <div class="a card" id="fee" style="left:1000px;top:230px;width:800px;height:270px;box-sizing:border-box;padding:28px 36px">
+      <div class="kick">Student visa fee</div>
+      <div style="display:flex;align-items:baseline;gap:22px;margin-top:10px">
+        <span style="font-size:44px;font-weight:700;color:var(--mute)">A$</span>
+        <span id="feenum" class="mono" style="font-size:130px;font-weight:600;color:var(--coral);line-height:1">710</span>
+        <span id="feechip" class="chip" style="color:#fff;background:var(--coral);border-color:var(--coral);font-size:26px">+125%</span>
+      </div>
+      <div class="cap" style="margin-top:12px">July 2024 · A$710 → A$1,600 · Dept of Home Affairs</div>
+    </div>
+    <div class="a card" id="cal" style="left:1000px;top:530px;width:800px;height:220px;box-sizing:border-box;padding:24px 36px">
+      <div class="kick">A mistimed application can cost</div>
+      <div id="months" style="display:flex;gap:9px;margin-top:16px"></div>
+      <div id="calt" style="margin-top:14px;font-size:30px;font-weight:800;color:var(--coral)">= a whole year</div>
+    </div>
+  </div>
+
+  <!-- ===================== NOISE ===================== -->
+  <div class="scene" id="sc-noise">
+    <div id="nA" class="a" style="inset:0">
+      <div class="a" id="nface" style="left:390px;top:350px;width:270px;height:270px;border-radius:50%;overflow:hidden;border:6px solid #fff;box-shadow:0 20px 40px -18px #37305C88"><img data-img="meiface" style="width:100%;height:100%;object-fit:cover"></div>
+      <div class="a" id="nq1" style="left:640px;top:330px;font-size:70px;font-weight:800;color:var(--pink)">?</div>
+      <div class="a" id="nq2" style="left:360px;top:320px;font-size:56px;font-weight:800;color:var(--lav)">!</div>
+      <div class="a bub" id="nb1" style="left:90px;top:130px;width:520px"><div class="who">News headline</div><div class="say">"International student numbers at a <span style="color:var(--coral)">record high</span>"</div></div>
+      <div class="a bub" id="nb2" style="left:720px;top:170px;width:440px"><div class="who">Education agent</div><div class="say">"Apply early, the rules keep changing."</div></div>
+      <div class="a bub" id="nb3" style="left:110px;top:660px;width:620px"><div class="who">Friend already in Sydney</div><div class="say">"Rent here is out of control."</div><div class="fn">Example voice from our empathy research · not statistical evidence</div></div>
+      <div class="a" id="sawh" style="left:1180px;top:200px;width:640px;text-align:center"><div class="kick">The contradiction</div><div style="font-size:54px;font-weight:800;color:var(--deep);margin-top:8px">Head <span class="em">vs</span> heart</div></div>
+      <svg class="a" id="saw" style="left:1180px;top:330px" width="640" height="480" viewBox="0 0 640 480">
+        <polygon points="320,300 270,400 370,400" fill="#37305C"/>
+        <g id="beam">
+          <rect x="40" y="288" width="560" height="14" rx="7" fill="#8B7FE8"/>
+          <g transform="translate(110 210)"><circle r="70" fill="#fff" stroke="#8B7FE8" stroke-width="5"/><text y="-6" text-anchor="middle" style="font-size:22px;font-weight:600;fill:#37305C">HEAD</text><text y="22" text-anchor="middle" style="font-size:15px;fill:#6F6894">official</text><text y="40" text-anchor="middle" style="font-size:15px;fill:#6F6894">numbers</text></g>
+          <g transform="translate(530 210)"><path d="M0 50 C -90 -10, -55 -75, 0 -32 C 55 -75, 90 -10, 0 50 Z" fill="#E578A9"/><text y="-6" text-anchor="middle" style="font-size:22px;font-weight:600;fill:#fff">HEART</text><text y="18" text-anchor="middle" style="font-size:15px;fill:#fff">friends' stories</text></g>
+        </g>
+      </svg>
+    </div>
+    <div id="nB" class="a" style="inset:0">
+      <div class="a card" id="dan" style="left:110px;top:170px;width:600px;height:320px;box-sizing:border-box;padding:30px 34px">
+        <div style="display:flex;gap:26px;align-items:center">
+          <div style="width:120px;height:120px;border-radius:50%;background:var(--blue);color:#fff;font-size:64px;font-weight:800;display:flex;align-items:center;justify-content:center">D</div>
+          <div><div class="kick" style="font-size:14px">Secondary reader</div><div style="font-size:54px;font-weight:800;color:var(--deep)">Daniel, 41</div><div style="font-family:var(--fb);font-size:22px;color:var(--mute)">Education agent · advises many students</div></div>
+        </div>
+        <div style="margin-top:26px;font-size:32px;font-weight:700;color:var(--blue)">"I need numbers I can cite."</div>
+      </div>
+      <div class="a card" id="deck" style="left:1220px;top:170px;width:590px;height:330px;box-sizing:border-box;padding:18px 22px;background:#fff">
+        <div class="kick" style="font-size:14px">Client slides · page 7</div>
+        <div style="margin-top:12px;height:12px;width:60%;border-radius:6px;background:var(--ink3)"></div>
+        <div id="decknote" class="a" style="right:22px;top:8px;font-family:var(--fh);font-size:38px;color:var(--coral)">no text around it!</div>
+      </div>
+      <div class="a" id="mini" style="left:740px;top:240px;width:380px;height:220px;border-radius:14px;background:#fff;border:2px solid var(--lav);box-shadow:0 18px 30px -16px #37305C88">
+        <svg width="380" height="220" viewBox="0 0 380 220"><polyline points="30,170 90,150 150,165 210,90 270,70 340,110" fill="none" stroke="#8B7FE8" stroke-width="6" stroke-linejoin="round"/><polyline points="30,170 90,185 150,195 210,120 270,110 340,160" fill="none" stroke="#E578A9" stroke-width="6" stroke-linejoin="round"/><line x1="24" y1="200" x2="356" y2="200" stroke="#DCD4EF" stroke-width="3"/></svg>
+      </div>
+      <div class="a card" id="capstd" style="left:110px;top:530px;width:1700px;height:340px;box-sizing:border-box;padding:24px 36px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font-size:38px;font-weight:800;color:var(--deep)">Our caption standard <span style="color:var(--blue)">· every chart</span></div><span class="chip" style="color:var(--blue)">E5 · STANDALONE &amp; CITABLE</span></div>
+        <div style="margin-top:14px">
+          <div class="caprow" id="cr0"><span>COUNTS</span><div class="tt" data-t="NSW international student enrolments and commencements, head count"></div></div>
+          <div class="caprow" id="cr1"><span>PERIOD</span><div class="tt" data-t="January–May each year, indexed to Jan–May 2019 = 100"></div></div>
+          <div class="caprow" id="cr2"><span>EXCLUDES</span><div class="tt" data-t="Visa outcomes and where students live"></div></div>
+          <div class="caprow" id="cr3"><span>SOURCE</span><div class="tt" data-t="Australian Government Department of Education, monthly summary"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== DATA ===================== -->
+  <div class="scene" id="sc-data">
+    <div class="a" id="dh" style="left:110px;top:104px;display:flex;gap:22px;align-items:baseline"><h2 style="font-size:58px;color:var(--deep)">What we <span class="em">measured</span></h2><span class="kick">Five public datasets · six figures</span></div>
+    <div id="dcards"></div>
+    <svg class="a" id="sl" style="left:110px;top:470px" width="1100" height="310" viewBox="0 0 1100 310"></svg>
+    <div class="a mchip" id="mc0" style="left:1250px;top:490px"><i>1</i>Same start: 2019 = 100</div>
+    <div class="a mchip" id="mc1" style="left:1250px;top:584px"><i>2</i>Log scale: small areas stay visible</div>
+    <div class="a mchip" id="mc2" style="left:1250px;top:678px"><i>3</i>Policy dates pinned to the timeline</div>
+    <div id="qstrip"></div>
+  </div>
+
+  <!-- ===================== ACT 1 ===================== -->
+  <div class="scene" id="sc-act1">
+    <div class="a imgcard" id="a1img" style="left:110px;top:200px;width:500px;height:380px"><img data-img="s1"><img data-img="s2" id="a1s2" class="a" style="left:0;top:0;width:100%;height:100%;object-fit:cover"><span class="sid" id="a1sid">S1</span></div>
+    <div class="a card" id="meta" style="left:110px;top:600px;width:500px;height:250px;overflow:hidden"><svg id="metasvg" width="500" height="250" viewBox="0 0 500 250"></svg></div>
+    <div class="a card" id="a1chart" style="left:650px;top:200px;width:1160px;height:620px">
+      <div class="chead"><span>Index · Jan–May 2019 = 100 · NSW</span><span>Dept of Education</span></div>
+      <svg id="fig1" class="a" style="left:20px;top:70px" width="1120" height="530" viewBox="0 0 1120 530"></svg>
+      <div class="a" id="a1ban" style="right:30px;top:58px;display:flex;gap:12px"><span class="chip" style="color:#fff;background:var(--lav);border-color:var(--lav);font-size:19px">TOTAL CAME BACK ✓</span><span class="chip" style="color:#fff;background:var(--pink);border-color:var(--pink);font-size:19px">NEW INTAKE DID NOT ✗</span></div>
+    </div>
+    <div class="a cap" id="a1cap" style="left:650px;top:832px;width:1160px"><b>Fig 1</b> · NSW international students, January–May each year · indexed to Jan–May 2019 = 100 · Source: Australian Government Department of Education, monthly summary</div>
+  </div>
+
+  <!-- ===================== ACT 2a MAP ===================== -->
+  <div class="scene" id="sc-act2a">
+    <div class="a imgcard" id="mapc" style="left:110px;top:200px;width:760px;height:640px;background:#F2F2F2">
+      <div id="mapw" class="a" style="left:0;top:-4px;width:760px;height:649px;transform-origin:450px 419px">
+        <img data-img="map" style="width:760px;height:649px">
+        <div class="a" id="ring1" style="left:450px;top:419px;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;border:5px solid var(--pink)"></div>
+        <div class="a" id="ring2" style="left:450px;top:419px;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;border:5px solid var(--pink)"></div>
+      </div>
+      <span class="sid" style="background:var(--pink)">PLACE OF STUDY · 2025</span>
+    </div>
+    <div class="a" id="mh" style="left:930px;top:200px;width:880px"><h2 style="font-size:66px;color:var(--deep)">Sydney is <span class="em">not one place</span></h2></div>
+    <div class="a" id="m601" style="left:930px;top:360px;width:880px;display:flex;gap:30px;align-items:center">
+      <span id="m601n" class="mono" style="font-size:132px;font-weight:600;color:var(--pink);line-height:1">0.0%</span>
+      <div style="font-family:var(--fb);font-size:26px;line-height:1.35;color:var(--mute)">of known enrolments sit in one SA4:<br><b style="color:var(--deep)">City &amp; Inner South</b> · 223,386 students</div>
+    </div>
+    <div class="a" id="mbar" style="left:930px;top:560px;width:880px;height:64px">
+      <div class="seg" id="mb0" style="left:0;height:64px;background:var(--pink)">City &amp; Inner South</div>
+      <div class="seg" id="mb1" style="height:64px;background:var(--lav)">Next two</div>
+      <div class="seg" id="mb2" style="height:64px;background:#DCD4EF;color:var(--mute)">11 others</div>
+    </div>
+    <div class="a" id="m858" style="left:930px;top:660px;width:880px;display:flex;gap:26px;align-items:center">
+      <span id="m858n" class="mono" style="font-size:96px;font-weight:600;color:var(--lav);line-height:1">0.0%</span>
+      <div style="font-family:var(--fb);font-size:26px;line-height:1.35;color:var(--mute)">sit in the <b style="color:var(--deep)">top three SA4s</b> combined</div>
+    </div>
+    <div class="a cap" id="mcap" style="left:110px;top:852px;width:1700px"><b>Fig 2</b> · Known international enrolments by place of study (not residence) · 14 Sydney SA4 regions, full-year 2025 · log colour scale · Source: Dept of Education; ABS ASGS Ed. 3 boundaries</div>
+  </div>
+
+  <!-- ===================== ACT 2b HEAT ===================== -->
+  <div class="scene" id="sc-act2b">
+    <div class="a" id="hth" style="left:110px;top:176px"><h2 style="font-size:40px;color:var(--deep)">Each area has its own <span class="em">subjects</span></h2></div>
+    <div class="a" id="heatw" style="left:110px;top:232px"><div id="heat"></div></div>
+    <div class="a cap" id="hleg" style="left:350px;top:820px;display:flex;gap:10px;align-items:center"><span>5</span><i id="legbar" style="display:inline-block;width:240px;height:12px;border-radius:6px"></i><span>81,426</span><span style="margin-left:14px">log scale · striped = not disclosed</span></div>
+    <div class="a imgcard" id="h4img" style="left:1450px;top:232px;width:360px;height:330px"><img data-img="s4" style="object-position:top"><span class="sid">S4</span></div>
+    <div class="a" id="hc1" style="left:1450px;top:586px;width:370px"><div class="mono" style="font-size:66px;font-weight:600;color:var(--pink);line-height:1">81,426</div><div style="font-family:var(--fb);font-size:22px;color:var(--mute);margin-top:6px">Business · City &amp; Inner South</div></div>
+    <div class="a" id="hc2" style="left:1450px;top:712px;width:370px"><div class="mono" style="font-size:66px;font-weight:600;color:var(--blue);line-height:1">614 <span style="font-size:36px;color:var(--mute)">vs</span> 48</div><div style="font-family:var(--fb);font-size:22px;color:var(--mute);margin-top:6px">Health vs Business · Outer South West</div></div>
+    <div class="a stamp" id="hstamp" style="left:250px;top:440px;font-size:44px;padding:14px 30px;transform-origin:50% 50%;border-width:6px;background:#fffffff0">Where they study ≠ where they live</div>
+    <div class="a cap" id="hcap" style="left:110px;top:852px;width:1700px"><b>Fig 3</b> · Known international enrolments by place of study · 14 Sydney SA4s × 13 fields of study · Source: Australian Government Department of Education</div>
+  </div>
+
+  <!-- ===================== ACT 3a VISA ===================== -->
+  <div class="scene" id="sc-act3a">
+    <div class="a imgcard" id="vcard" style="left:110px;top:200px;width:860px;height:630px;background:#fff">
+      <div id="vclip" class="a" style="left:15px;top:2px;width:830px;height:625px"><img data-img="fig4" style="width:830px;height:625px"></div>
+      <div id="vscan" class="a" style="top:0;bottom:0;width:4px;background:var(--pink);box-shadow:0 0 18px var(--pink)"></div>
+      <span class="sid" style="left:auto;right:16px;background:var(--blue)">NATIONAL · ALL OF AUSTRALIA</span>
+    </div>
+    <div class="a" id="vh" style="left:1030px;top:200px"><h2 style="font-size:62px;color:var(--deep)">Every dip has a <span class="em">date</span></h2></div>
+    <div class="a vst" id="vs0" style="left:1030px;top:310px;transform-origin:50% 50%"><b>MAR 2024</b><span>Genuine Student test replaces GTE</span></div>
+    <div class="a vst" id="vs1" style="left:1030px;top:452px;transform-origin:50% 50%"><b>JUL 2024</b><span>Visa fee A$710 → A$1,600</span></div>
+    <div class="a vst" id="vs2" style="left:1030px;top:594px;transform-origin:50% 50%"><b>DEC 2024</b><span>MD111 replaces MD107 · enrolment caps</span></div>
+    <div class="a" id="vwarn" style="left:1030px;top:742px;width:770px;box-sizing:border-box;border:3px dashed var(--coral);border-radius:16px;padding:12px 22px;background:#fff">
+      <div style="font-size:30px;font-weight:800;color:var(--coral)">Same timing ≠ proven cause</div>
+      <div style="font-family:var(--fb);font-size:21px;color:var(--mute)">Use the timeline as a watch-list, not a forecast.</div>
+    </div>
+    <div class="a cap" id="vcap" style="left:110px;top:846px;width:900px"><b>Fig 4</b> · National student visa grant rate, monthly, with 3-month average · Source: Department of Home Affairs</div>
+  </div>
+
+  <!-- ===================== ACT 3b SECTOR ===================== -->
+  <div class="scene" id="sc-act3b">
+    <div class="a imgcard" id="s6c" style="left:110px;top:200px;width:480px;height:480px"><img data-img="s6"><span class="sid">S6</span></div>
+    <div class="a card" id="s6beat" style="left:110px;top:700px;width:480px;box-sizing:border-box;padding:16px 22px"><div class="kick" style="font-size:14px;color:var(--pink)">Shift</div><div style="font-size:25px;font-weight:700;color:var(--deep);line-height:1.2;margin-top:4px">"So it depends on my sector and intake, not the headline."</div></div>
+    <div class="a" id="sbh" style="left:660px;top:196px;width:1150px"><h2 style="font-size:52px;color:var(--deep)">The sector behind the headline has the <span class="em">fewest newcomers</span></h2></div>
+    <div class="a mono" id="sbleg" style="left:660px;top:340px;font-size:18px;color:var(--mute)"><span style="color:var(--pink)">■</span> new commencements &nbsp;&nbsp; <span style="color:#B7AEDF">■</span> continuing students</div>
+    <div id="bars"></div>
+    <div class="a cap" id="sbcap" style="left:660px;top:842px;width:1150px"><b>Fig 5</b> · NSW international enrolments by sector · new commencements vs continuing · Source: Australian Government Department of Education</div>
+  </div>
+
+  <!-- ===================== ACT 4 COST ===================== -->
+  <div class="scene" id="sc-act4">
+    <div class="a imgcard" id="s7c" style="left:110px;top:200px;width:480px;height:440px"><img data-img="s7"><span class="sid">S7</span></div>
+    <div class="a card" id="buf" style="left:110px;top:660px;width:480px;height:190px;box-sizing:border-box;padding:18px 24px">
+      <div class="kick" style="font-size:14px">Mei's budget</div>
+      <div style="position:relative;height:56px;margin-top:12px">
+        <div class="seg" style="left:0;width:270px;height:56px;background:var(--lav)">known costs</div>
+        <div class="seg" id="bufseg" style="left:274px;width:0;height:56px;background:repeating-linear-gradient(45deg,#E578A9 0 10px,#F09CC0 10px 20px)">buffer</div>
+      </div>
+      <div style="font-family:var(--fb);font-size:20px;color:var(--mute);margin-top:12px">Plan for rising prices, not one fixed number.</div>
+    </div>
+    <div class="a card" id="cpic" style="left:650px;top:200px;width:1160px;height:620px">
+      <div class="chead"><span>Index · 2019 = 100 · Sydney prices &amp; NSW students</span><span>ABS CPI · Dept of Education</span></div>
+      <svg id="fig6" class="a" style="left:20px;top:70px" width="1120" height="530" viewBox="0 0 1120 530"></svg>
+    </div>
+    <div class="a" id="ptag" style="left:1170px;top:540px;width:420px;height:200px;transform-origin:210px 0px">
+      <svg width="420" height="200" viewBox="0 0 420 200"><line x1="210" y1="0" x2="210" y2="34" stroke="#37305C" stroke-width="3"/><path d="M60 40 L360 40 L400 110 L360 180 L60 180 Z" fill="#FFF4F8" stroke="#D95F7E" stroke-width="4" transform="rotate(0)"/><circle cx="210" cy="56" r="9" fill="#fff" stroke="#D95F7E" stroke-width="3"/><text x="215" y="112" text-anchor="middle" style="font-size:27px;font-weight:600;fill:#D95F7E">AN INDEX,</text><text x="215" y="146" text-anchor="middle" style="font-size:27px;font-weight:600;fill:#D95F7E">NOT A PRICE TAG</text><text x="215" y="170" text-anchor="middle" style="font-size:14px;fill:#6F6894">relative change only · no causation</text></svg>
+    </div>
+    <div class="a cap" id="cpcap" style="left:650px;top:832px;width:1160px"><b>Fig 6</b> · Sydney CPI (All Groups, Rents) and NSW international enrolments · annual mean index, 2019 = 100 · 2026* = Jan–May · Source: ABS; Dept of Education</div>
+  </div>
+
+  <!-- ===================== AHA ===================== -->
+  <div class="scene" id="sc-aha">
+    <div class="a" id="glow" style="left:460px;top:120px;width:1000px;height:640px;border-radius:50%;background:radial-gradient(closest-side,#FFE7F2 0%,#FFE7F200 100%)"></div>
+    <div class="a imgcard" id="s8c" style="left:510px;top:170px;width:900px;height:536px;transform-origin:450px 268px"><img data-img="s8"><span class="sid" style="background:var(--pink)">S8 · AHA</span></div>
+    <div class="a lens" id="ln0" style="left:110px;top:190px"><span class="chip" style="color:var(--lav)">E1 · FIG 1</span><b>Headline</b><p>New arrivals −17.6%, while enrolments +8.8%</p></div>
+    <div class="a lens" id="ln1" style="left:1450px;top:190px"><span class="chip" style="color:var(--lav)">E4 · FIG 2–3</span><b>Location</b><p>85.8% study in three SA4s; each has its own fields</p></div>
+    <div class="a lens" id="ln2" style="left:110px;top:560px"><span class="chip" style="color:var(--lav)">E2 · FIG 4–5</span><b>Visa timing</b><p>Every grant-rate dip has a date</p></div>
+    <div class="a lens" id="ln3" style="left:1450px;top:560px"><span class="chip" style="color:var(--lav)">E3 · FIG 6</span><b>Cost</b><p>CPI +22.7% and rents +15.1%, 2019–2025</p></div>
+    <div class="a" id="plus0" style="left:0;top:0;font-size:64px;font-weight:800;color:var(--pink)">+</div>
+    <div class="a" id="plus1" style="left:0;top:0;font-size:64px;font-weight:800;color:var(--pink)">+</div>
+    <div class="a" id="plus2" style="left:0;top:0;font-size:64px;font-weight:800;color:var(--pink)">+</div>
+    <div class="a" id="ahatxt" style="left:0;width:1920px;top:250px;text-align:center"><div class="kick" style="color:var(--pink)">Scene 8 · the aha moment</div><h1 style="font-size:96px;color:var(--deep);margin-top:16px">The headline is only<br>the <span class="em">starting point</span></h1></div>
+  </div>
+
+  <!-- ===================== PLAN ===================== -->
+  <div class="scene" id="sc-plan">
+    <div class="a" id="plt" style="left:110px;top:150px;width:1040px">
+      <div class="kick">04 · Recommendations · Scene 9</div>
+      <h2 style="font-size:64px;color:var(--deep);margin-top:16px">Four moves, each <span class="em">backed</span> by a figure</h2>
+      <p style="margin:18px 0 0;font-family:var(--fb);font-size:26px;color:var(--mute)">Mei stops relying on headlines and brings the evidence to her family.</p>
+    </div>
+    <div class="a imgcard" id="s9c" style="left:1190px;top:140px;width:620px;height:310px"><img data-img="s9"><span class="sid">S9</span></div>
+    <div id="pcards"></div>
+    <div class="a plist" id="pl1" style="left:110px;top:716px;width:840px;background:#EEEAFE;border:2px solid #C9C2EA"><h4 style="color:var(--lav)">✓ Mei can decide now</h4><span class="it">Which intake</span><span class="it">Which area</span><span class="it">How big a buffer</span><span class="it">Which sector</span></div>
+    <div class="a plist" id="pl2" style="left:970px;top:716px;width:840px;background:#FDEEF3;border:2px solid #F3C3D4"><h4 style="color:var(--coral)">? Still needs · the data can't decide</h4><span class="it" id="pi0">Her own course fees</span><span class="it" id="pi1">Real rent quotes</span><span class="it" id="pi2">The next policy update</span></div>
+  </div>
+
+  <!-- ===================== LAND ===================== -->
+  <div class="scene" id="sc-land">
+    <div class="a" id="pano" style="left:0;top:0;width:2556px;height:1080px;transform-origin:0 50%"><img data-img="s10" style="width:2556px;height:1080px;object-fit:cover"></div>
+    <div class="a" style="inset:0;background:linear-gradient(180deg,#F6F3FCee 0%,#F6F3FCaa 38%,#F6F3FC00 62%)"></div>
+    <svg class="a" style="left:0;top:0" width="1920" height="1080"><path id="lpath" d="M-100 140 C 500 60, 1200 220, 1700 600" fill="none" stroke="#E578A9" stroke-width="3" stroke-dasharray="2 14" stroke-linecap="round" opacity=".8"/></svg>
+    <div class="a" id="lplane" style="left:0;top:0;width:80px;height:80px;margin:-40px 0 0 -40px"><svg viewBox="0 0 24 24" width="80" height="80"><path d="M21.5 15.5v-2l-8-5v-5.5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5l-8 5v2l8-2.5v5.5l-2 1.5v1.5l3.5-1 3.5 1v-1.5l-2-1.5v-5.5l8 2.5z" fill="#E578A9" transform="rotate(90 12 12)"/></svg></div>
+    <div class="a" id="lt1" style="left:110px;top:130px"><div class="kick" style="color:var(--pink)">Scene 10 · Arrival</div><h1 style="font-size:104px;color:var(--deep);margin-top:14px">From a headline</h1></div>
+    <div class="a" id="lt2" style="left:110px;top:262px"><h1 style="font-size:104px;color:var(--pink)">to a plan</h1></div>
+    <div class="a" id="leq" style="left:110px;top:410px;display:flex;gap:14px;align-items:center"></div>
+    <div class="a" id="llogo" style="left:110px;top:500px;display:flex;gap:14px;align-items:center;background:var(--deep);color:#fff;border-radius:999px;padding:14px 30px 14px 22px;font-size:34px;font-weight:800">
+      <svg viewBox="0 0 24 24" width="34" height="34"><path d="M21.5 15.5v-2l-8-5v-5.5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5l-8 5v2l8-2.5v5.5l-2 1.5v1.5l3.5-1 3.5 1v-1.5l-2-1.5v-5.5l8 2.5z" fill="#F7B3CF"/></svg>The Price of Arrival</div>
+  </div>
+
+  <!-- ===================== CREDITS ===================== -->
+  <div class="scene" id="sc-credits" style="background:var(--deep);color:#fff">
+    <div class="a" id="cr" style="left:0;width:1920px;top:150px;text-align:center">
+      <h1 style="font-size:96px">The Price <span style="color:#F7B3CF">of Arrival</span></h1>
+      <p style="margin:18px 0 0;font-size:30px;color:#D9D2F2">A data story by <b style="color:#fff">DataLens</b> · Katherine Lin · Jiajun Xu · Yucheng Liu</p>
+      <p class="mono" style="margin:10px 0 0;font-size:18px;letter-spacing:.14em;color:#B7AEDF">UTS · DATA-DRIVEN STORYTELLING · 2026</p>
+      <div style="margin:56px auto 0;width:1300px;text-align:left;display:grid;grid-template-columns:240px 1fr;gap:16px 30px;font-family:var(--fb);font-size:22px;color:#E9E4FA;line-height:1.35">
+        <span class="mono" style="color:#F7B3CF;font-size:16px;letter-spacing:.14em;padding-top:4px">DATA</span><span>Australian Government Department of Education (monthly student summary; enrolments by ABS SA4) · Department of Home Affairs (Student Visa Program) · Australian Bureau of Statistics (Sydney CPI; ASGS Edition 3 SA4 boundaries)</span>
+        <span class="mono" style="color:#F7B3CF;font-size:16px;letter-spacing:.14em;padding-top:4px">LIMITS</span><span>CPI is an index, not a dollar budget · SA4 data is place of study, not residence · 2026 covers Jan–May only · visa timing shows patterns, not proven causes</span>
+        <span class="mono" style="color:#F7B3CF;font-size:16px;letter-spacing:.14em;padding-top:4px">MADE WITH</span><span>DataLens storyboard illustrations · AI-generated narration (Kokoro TTS) · original music and sound</span>
+      </div>
+      <p class="mono" style="margin:50px 0 0;font-size:16px;letter-spacing:.14em;color:#9D96BC">© 2026 DATALENS · ALL RIGHTS RESERVED</p>
+    </div>
+  </div>
+
+  <div id="subs"><span id="subtxt"></span></div>
+  <div id="prog"><div class="rail"></div><div class="fill" id="pfill"></div><div class="pl" id="pplane"><svg viewBox="0 0 24 24" width="28" height="28"><path d="M21.5 15.5v-2l-8-5v-5.5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5l-8 5v2l8-2.5v5.5l-2 1.5v1.5l3.5-1 3.5 1v-1.5l-2-1.5v-5.5l8 2.5z" fill="#E578A9" transform="rotate(90 12 12)"/></svg></div></div>
+</div>
+
+<div id="play" hidden><div class="btn"><svg width="64" height="64" viewBox="0 0 24 24"><path d="M7 4l14 8-14 8z" fill="#fff"/></svg></div><p>The Price of Arrival</p><small id="playlen">CLICK TO PLAY · SOUND ON</small></div>
+<audio id="aud" preload="auto" src="__AUDIO__"></audio>
+
+<script>
+const IMG=__IMG__;
+const TL=__TL__;
+document.querySelectorAll('img[data-img]').forEach(i=>{i.src=IMG[i.dataset.img]});
+</script>
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const lerp=(a,b,p)=>a+(b-a)*p;
+const E={
+  lin:t=>t,
+  out:t=>1-Math.pow(1-t,3),
+  io:t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,
+  back:t=>{const c1=1.9,c3=c1+1;return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2)}
+};
+const S=id=>TL.segs[id].s, Ee=id=>TL.segs[id].e;
+const SC=id=>TL.scenes[id];
+const pr=(t,t0,d=.6,e=E.out)=>e(cl((t-t0)/d));
+function st(el,o,x=0,y=0,s=1,r=0){
+  el.style.opacity=o.toFixed(3);
+  el.style.visibility=o<=.002?'hidden':'visible';
+  el.style.transform=`translate(${x.toFixed(2)}px,${y.toFixed(2)}px) scale(${s.toFixed(4)}) rotate(${r.toFixed(2)}deg)`;
+}
+// enter at t0 (and optional exit at t1): returns eased enter progress
+function show(el,t,t0,o={}){
+  const d=o.d||.6, dx=o.dx||0, dy=(o.dy===undefined?26:o.dy), s0=(o.s0===undefined?1:o.s0), r0=o.r0||0;
+  const p=(o.e||E.out)(cl((t-t0)/d));
+  let op=cl((t-t0)/(d*.55));
+  if(o.t1!==undefined) op*=1-cl((t-o.t1)/(o.d1||.4));
+  if(o.omax!==undefined) op*=o.omax;
+  st(el,op,dx*(1-p)+(o.x||0),dy*(1-p)+(o.y||0),s0+(1-s0)*p,r0*(1-p)+(o.r||0));
+  return p;
+}
+const fmt=(v,d=0)=>v.toLocaleString('en-AU',{minimumFractionDigits:d,maximumFractionDigits:d});
+const NS='http://www.w3.org/2000/svg';
+const C={lav:'#8B7FE8',pink:'#E578A9',coral:'#D95F7E',blue:'#6FA3E0',mute:'#6F6894',paper:'#38315A',deep:'#37305C',ink:'#FCFAFF',line:'#DCD4EF'};
+
+/* ---------------- clouds ---------------- */
+const clouds=[];
+(function(){
+  const box=$('clouds');
+  const cfg=[[120,140,1.0,9],[900,90,.7,6],[1500,250,1.2,11],[400,760,.9,7],[1300,700,1.1,8],[1800,520,.8,5]];
+  cfg.forEach(([x,y,s,v])=>{
+    const d=document.createElement('div');d.className='cloud';
+    d.innerHTML=`<svg width="${260*s}" height="${110*s}" viewBox="0 0 260 110"><path d="M30 90 C0 90 0 55 30 55 C30 25 70 15 90 38 C105 5 165 5 175 40 C205 25 245 45 230 70 C255 75 250 92 228 92 Z" fill="#FFFFFF"/></svg>`;
+    box.appendChild(d);clouds.push({el:d,x,y,v,w:260*s});
+  });
+})();
+
+/* ---------------- flap boards ---------------- */
+const CH=' ABCDEFGHIJKLMNOPQRSTUVWXYZ?0123456789';
+function hash(a,b){let h=(a*374761393+b*668265263)|0;h=(h^(h>>>13))*1274126177|0;return (h^(h>>>16))>>>0}
+function makeFlap(row,len,w,h,fs,pink){
+  const tiles=[];
+  for(let i=0;i<len;i++){const e=document.createElement('span');e.className='flap'+(pink?' p':'')+(w<60?' small':'');
+    e.style.width=w+'px';e.style.height=h+'px';e.style.fontSize=fs+'px';row.appendChild(e);tiles.push(e)}
+  return {tiles,len,seed:Math.floor(Math.random()*1e6)};
+}
+// plan: [{t0,text,stag,spin}]
+function flapAt(f,t,plan){
+  let k=-1;plan.forEach((p,i)=>{if(t>=p.t0)k=i});
+  f.tiles.forEach((el,i)=>{
+    let ch=' ',fl=0;
+    if(k>=0){
+      const p=plan[k],prev=k>0?(plan[k-1].text.padEnd(f.len)[i]):' ',tgt=p.text.padEnd(f.len)[i];
+      const settle=p.t0+(p.spin||.35)+i*(p.stag||.07);
+      if(prev===tgt||t>=settle){ch=tgt}else{const fr=Math.floor(t*24);ch=CH[hash(i+f.len*7,fr)%CH.length];fl=(t*24)%1}
+    }
+    if(el.textContent!==ch)el.textContent=ch;
+    el.style.transform=fl?`scaleY(${(1-.32*Math.sin(Math.PI*fl)).toFixed(3)})`:'none';
+  });
+}
+
+/* ---------------- line chart ---------------- */
+function lineChart(svg,o){
+  const W=1120,H=530,L=76,R=200,T=30,B=54;
+  const X=i=>L+(W-L-R)*i/(o.x.length-1);
+  const Y=v=>T+(H-T-B)*(1-(v-o.min)/(o.max-o.min));
+  let s='';
+  o.ticks.forEach(t=>{s+=`<line class="grid" x1="${L}" x2="${W-R}" y1="${Y(t)}" y2="${Y(t)}"/><text class="ax" x="${L-14}" y="${Y(t)+6}" text-anchor="end">${t}</text>`});
+  s+=`<line class="base" x1="${L}" x2="${W-R}" y1="${Y(100)}" y2="${Y(100)}"/><text class="ax" x="${L+8}" y="${Y(100)-10}">baseline 100</text>`;
+  o.x.forEach((x,i)=>{s+=`<text class="ax" x="${X(i)}" y="${H-14}" text-anchor="middle">${x}</text>`});
+  s+='<g id="'+svg.id+'-ser"></g><g id="'+svg.id+'-extra"></g>';
+  svg.innerHTML=s;
+  const g=svg.querySelector('#'+svg.id+'-ser');
+  const out=[];
+  o.series.forEach(se=>{
+    const grp=document.createElementNS(NS,'g');
+    const d=se.data.map((v,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)).join(' ');
+    const path=document.createElementNS(NS,'path');
+    path.setAttribute('d',d);path.setAttribute('pathLength','1');path.setAttribute('fill','none');path.setAttribute('stroke',se.c);
+    path.setAttribute('stroke-width','5');path.setAttribute('stroke-linejoin','round');path.setAttribute('stroke-linecap','round');path.setAttribute('stroke-dasharray','1 1');
+    grp.appendChild(path);
+    const dots=se.data.map((v,i)=>{const c=document.createElementNS(NS,'circle');c.setAttribute('cx',X(i));c.setAttribute('cy',Y(v));c.setAttribute('r',(se.mark||[]).includes(i)?8:5);c.setAttribute('fill',C.ink);c.setAttribute('stroke',se.c);c.setAttribute('stroke-width','3');grp.appendChild(c);return c});
+    const labels=(se.labels||[]).map(([i,txt,dy])=>{const tx=document.createElementNS(NS,'text');tx.setAttribute('class','lbl');tx.setAttribute('x',X(i));tx.setAttribute('y',Y(se.data[i])+dy);tx.setAttribute('text-anchor','middle');tx.setAttribute('fill',se.c);tx.textContent=txt;grp.appendChild(tx);return {el:tx,i}});
+    const n=se.data.length-1;
+    const end=document.createElementNS(NS,'text');end.setAttribute('class','lbl');end.setAttribute('x',X(n)+18);end.setAttribute('y',Y(se.data[n])+(se.endDy||6));end.setAttribute('fill',se.c);end.textContent=se.name;grp.appendChild(end);
+    g.appendChild(grp);
+    out.push({grp,path,dots,labels,end,n});
+  });
+  return {X,Y,ser:out,extra:svg.querySelector('#'+svg.id+'-extra')};
+}
+function drawSeries(s,p,omax=1){
+  s.path.style.strokeDashoffset=(1-p).toFixed(4);
+  s.path.style.opacity=p>0?omax:0;
+  s.dots.forEach((c,i)=>{const q=cl((p-(i/s.n))*s.n*2+1);c.style.opacity=(p>0?q:0)*omax});
+  s.labels.forEach(l=>{l.el.style.opacity=cl((p-l.i/s.n)*4)*omax});
+  s.end.style.opacity=cl((p-.92)*12)*omax;
+}
+
+/* ---------------- build: opening ---------------- */
+const OF1=makeFlap($('of1'),13,76,96,62,false), OF2=makeFlap($('of2'),13,76,96,62,true);
+const clipsCfg=[
+  [110,150,-6,'International student numbers hit a <b>record high</b>'],
+  [1440,150,5,'<b>Record high</b>: students are back'],
+  [70,520,4,'Universities report <b>record-high</b> enrolments'],
+  [1480,520,-4,'Student numbers at <b>record high</b>, again'],
+  [250,730,-2,'What a <b>record high</b> means for you'],
+  [1290,730,3,'<b>Record high</b> intake sparks debate']];
+const clips=clipsCfg.map(([x,y,r,h],i)=>{const d=document.createElement('div');d.className='clip a';d.style.left=x+'px';d.style.top=y+'px';
+  d.innerHTML=`<div class="src">Headline · ${['Monday','Tuesday','Thursday','Friday','Sunday','Monday'][i]}</div><div class="hl">${h}</div><div class="ln" style="width:92%"></div><div class="ln" style="width:70%"></div>`;
+  $('clips').appendChild(d);return {el:d,r}});
+
+/* ---------------- build: mei ---------------- */
+const TAGS=[['E1','Is "record high" even about me?','Act 1<br>Headline'],['E4','Where would I study and live?','Act 2<br>Location'],['E2','When is it safe to apply?','Act 3<br>Visa timing'],['E3','Can I afford it?','Act 4<br>Cost']];
+const tagEls=TAGS.map(([c,q,a],i)=>{const d=document.createElement('div');d.className='tag4 a';d.style.left='1000px';d.style.top=(222+i*142)+'px';
+  d.innerHTML=`<span class="hole"></span><span class="chip" style="color:var(--lav)">${c}</span><span class="q">${q}</span><span class="act">${a}</span>`;$('sc-mei').appendChild(d);return d});
+const MONTHS='JFMAMJJASOND'.split('');
+const monthEls=MONTHS.map(m=>{const d=document.createElement('div');d.style.cssText='position:relative;width:54px;height:54px;border-radius:10px;background:var(--ink3);display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-weight:600;font-size:22px;color:var(--deep)';
+  d.innerHTML=m+'<svg style="position:absolute;inset:0" width="54" height="54"><path d="M10 10 L44 44 M44 10 L10 44" stroke="#D95F7E" stroke-width="6" stroke-linecap="round" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1"/></svg>';$('months').appendChild(d);return d.querySelector('path')});
+
+/* ---------------- build: noise ---------------- */
+const capRows=[0,1,2,3].map(i=>{const r=$('cr'+i);const tt=r.querySelector('.tt');return {r,tt,full:tt.dataset.t}});
+
+/* ---------------- build: data ---------------- */
+const DC=[['Dept of Education','01','Monthly student summary','NSW enrolments & commencements, by sector','→ Fig 1 · Fig 5'],
+  ['Dept of Education','02','Enrolments by SA4','14 Sydney areas × 13 fields of study','→ Fig 2 · Fig 3'],
+  ['ABS','03','SA4 boundaries','ASGS Edition 3 shapes for the map','→ Fig 2'],
+  ['Home Affairs','04','Student visa program','National grant rate, monthly','→ Fig 4'],
+  ['ABS','05','Consumer Price Index','Sydney All Groups & Rents CPI','→ Fig 6']];
+const dcEls=DC.map(([ag,n,t,p,f],i)=>{const d=document.createElement('div');d.className='dcard a';d.style.left=(110+i*344)+'px';d.style.top='196px';d.style.transformOrigin='50% 100%';
+  d.innerHTML=`<div class="h"><span>${ag}</span><b>${n}</b></div><div class="b"><h5>${t}</h5><p>${p}</p><div class="fig">${f}</div></div>`;$('sc-data').appendChild(d);return d});
+const slSvg=$('sl');
+slSvg.innerHTML=`
+ <text x="0" y="22" class="ax" style="font-size:18px;letter-spacing:.1em">DIFFERENT SIZES…</text>
+ <g id="slbars">
+  <rect id="slb0" x="40" y="40" width="90" height="250" rx="10" fill="#8B7FE8"/><text x="85" y="300" text-anchor="middle" class="ax">300k</text>
+  <rect id="slb1" x="170" y="190" width="90" height="100" rx="10" fill="#E578A9"/><text x="215" y="300" text-anchor="middle" class="ax">80k</text>
+  <rect id="slb2" x="300" y="262" width="90" height="28" rx="10" fill="#6FA3E0"/><text x="345" y="300" text-anchor="middle" class="ax">8k</text>
+ </g>
+ <g id="slright">
+  <text x="520" y="22" class="ax" style="font-size:18px;letter-spacing:.1em">…SAME STARTING LINE</text>
+  <line x1="520" x2="1080" y1="160" y2="160" class="base"/>
+  <text x="530" y="150" class="ax">2019 = 100</text>
+  <path id="sll0" d="M560 160 C 700 170, 820 90, 1060 70" fill="none" stroke="#8B7FE8" stroke-width="6" stroke-linecap="round" pathLength="1" stroke-dasharray="1 1"/>
+  <path id="sll1" d="M560 160 C 700 150, 850 120, 1060 110" fill="none" stroke="#6FA3E0" stroke-width="6" stroke-linecap="round" pathLength="1" stroke-dasharray="1 1"/>
+  <path id="sll2" d="M560 160 C 700 230, 850 250, 1060 215" fill="none" stroke="#E578A9" stroke-width="6" stroke-linecap="round" pathLength="1" stroke-dasharray="1 1"/>
+  <circle id="sldot" cx="560" cy="160" r="12" fill="#37305C"/>
+ </g>`;
+const QS=[['Q1','Record high?'],['Q2','Where?'],['Q3','When?'],['Q4','Can I afford it?']];
+const qsEls=QS.map(([q,t],i)=>{const d=document.createElement('div');d.className='qchip a';d.style.left=(110+i*432)+'px';d.style.top='800px';d.innerHTML=`<b>${q}</b>${t}`;$('sc-data').appendChild(d);return d});
+
+/* ---------------- act headers ---------------- */
+function makeQH(scene,label,q){
+  const d=document.createElement('div');d.className='qh a';
+  d.innerHTML='<div class="flaprow"></div><div class="qt">'+q+'</div>';
+  $(scene).appendChild(d);
+  const f=makeFlap(d.querySelector('.flaprow'),label.length,44,60,36,false);
+  return {el:d,f,label};
+}
+const QH={
+  act1:makeQH('sc-act1','Q1 HEADLINE','Is “record high” even about me?'),
+  act2a:makeQH('sc-act2a','Q2 WHERE','Where would I study and live?'),
+  act2b:makeQH('sc-act2b','Q2 WHERE','Where would I study and live?'),
+  act3a:makeQH('sc-act3a','Q3 WHEN','When is it safe to apply?'),
+  act3b:makeQH('sc-act3b','Q3 WHEN','When is it safe to apply?'),
+  act4:makeQH('sc-act4','Q4 COST','Can I afford it?')};
+// first-seg ids for intros
+const QINTRO={act1:'a1',act2a:'b1',act3a:'c1',act4:'e1'};
+function qhAt(id,t){
+  const h=QH[id],sc=SC(id),intro=QINTRO[id];
+  const w=h.el.offsetWidth||1300;
+  if(intro){
+    flapAt(h.f,t,[{t0:sc.s+.15,text:h.label,stag:.06,spin:.3}]);
+    const k=1.15,x0=(1920-w*k)/2,y0=430;
+    const p=pr(t,Ee(intro)+.1,.8,E.io);
+    const op=cl((t-sc.s-.05)/.3);
+    st(h.el,op,lerp(x0,110,p),lerp(y0,100,p),lerp(k,1,p));
+  }else{
+    flapAt(h.f,t,[{t0:-1,text:h.label}]);
+    st(h.el,1,110,100,1);
+  }
+}
+
+/* ---------------- act 1 ---------------- */
+const F1=lineChart($('fig1'),{x:[2019,2020,2021,2022,2023,2024,2025,2026],min:50,max:130,ticks:[60,80,100,120],
+  series:[{name:'Enrolments',c:C.lav,data:[100,100.73,85.03,77.94,99.36,116.57,117.66,108.83],mark:[6],labels:[[3,'77.9',-18],[6,'117.7 peak',-20]],endDy:-8},
+          {name:'Commencements',c:C.pink,data:[100,86.35,63.59,70.35,102.91,111.07,90.29,82.38],labels:[[2,'63.6',36]],endDy:16}]});
+(function(){const X=F1.X,Y=F1.Y,x=X(7);
+  F1.extra.innerHTML=`<g id="f1gap"><line x1="${x}" x2="${x}" y1="${Y(108.83)}" y2="${Y(82.38)}" stroke="${C.paper}" stroke-width="3" stroke-dasharray="4 6"/></g>
+  <text id="f1up" class="big-lbl" x="${x-24}" y="${Y(108.83)+52}" text-anchor="end" fill="${C.lav}">+8.8%</text>
+  <text id="f1dn" class="big-lbl" x="${x-24}" y="${Y(82.38)+58}" text-anchor="end" fill="${C.pink}">−17.6%</text>
+  <text id="f1vs" class="ax" x="${x-24}" y="${Y(82.38)+84}" text-anchor="end">2026 vs 2019</text>`})();
+// airport metaphor
+(function(){
+  let s=`<rect x="0" y="0" width="500" height="250" fill="#FCFAFF"/>
+  <line x1="0" y1="212" x2="500" y2="212" stroke="#DCD4EF" stroke-width="4"/>
+  <g id="term"><rect x="24" y="74" width="230" height="138" rx="10" fill="#EEEAFE" stroke="#8B7FE8" stroke-width="3"/><path d="M14 80 L139 34 L264 80 Z" fill="#8B7FE8"/><text x="139" y="66" text-anchor="middle" style="font-size:15px;font-weight:600;fill:#fff;letter-spacing:.1em">TERMINAL</text></g>`;
+  for(let i=0;i<40;i++){const cx=44+(i%10)*21,cy=96+Math.floor(i/10)*28;s+=`<circle class="tdot" cx="${cx}" cy="${cy}" r="7" fill="#8B7FE8"/>`}
+  s+=`<g id="mplane"><path d="M21.5 15.5v-2l-8-5v-5.5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5l-8 5v2l8-2.5v5.5l-2 1.5v1.5l3.5-1 3.5 1v-1.5l-2-1.5v-5.5l8 2.5z" fill="#E578A9" transform="translate(-30 -30) scale(2.5) rotate(110 12 12)"/></g>`;
+  for(let i=0;i<5;i++)s+=`<circle class="pdot" cx="0" cy="0" r="8" fill="#E578A9"/>`;
+  s+=`<text id="mt1" x="24" y="240" style="font-size:15px;font-weight:600;fill:#8B7FE8">ENROLMENTS = everyone inside</text>
+      <text id="mt2" x="476" y="240" text-anchor="end" style="font-size:15px;font-weight:600;fill:#E578A9">COMMENCEMENTS = just landing</text>`;
+  $('metasvg').innerHTML=s;
+})();
+const tdots=[...document.querySelectorAll('#metasvg .tdot')], pdots=[...document.querySelectorAll('#metasvg .pdot')];
+
+/* ---------------- act 2b heat ---------------- */
+const cols=['Agri','Arch','Business','Creative','Dual','Educ','Eng','Health','Hosp','IT','Mixed','Science','Society'];
+const rows=[
+ ['City & Inner South',[499,5952,81426,5021,1440,12878,10319,5045,8878,28795,12049,5168,45916]],
+ ['Eastern Suburbs',[152,1656,15690,4449,2097,1425,8298,692,213,6705,4479,2779,8156]],
+ ['Parramatta',[0,3641,11920,73,51,3145,5453,2381,2857,3546,549,345,4793]],
+ ['Ryde',[164,31,3936,482,0,2122,1090,582,478,3697,1553,807,3256]],
+ ['Inner South West',[0,160,3138,12,7,2243,368,60,687,122,54,0,1354]],
+ ['Inner West',[0,633,2329,5,8,1067,1510,124,751,500,90,0,1147]],
+ ['North Syd & Hornsby',[0,0,2405,21,6,530,36,1207,5,1334,305,52,387]],
+ ['Blacktown',[0,34,691,0,8,731,353,563,280,95,25,0,757]],
+ ['Outer West & Blue Mtns',[0,316,281,36,0,203,484,495,101,53,57,210,461]],
+ ['Northern Beaches',[0,0,626,13,0,0,0,0,115,8,323,0,454]],
+ ['Outer South West',[0,0,48,0,185,112,403,614,0,32,0,29,7]],
+ ['South West',[0,67,47,0,0,58,147,493,11,125,21,43,138]],
+ ['Baulkham Hills & Hawkesb.',[0,71,139,0,0,74,63,334,6,13,28,0,166]],
+ ['Sutherland',[0,0,0,0,0,59,0,0,0,0,0,0,743]]];
+const stops=[[219,229,249],[176,168,248],[240,158,200],[194,71,123]];
+function hcol(t){t=cl(t);const k=t*(stops.length-1),i=Math.min(stops.length-2,Math.floor(k)),f=k-i;const a=stops[i],b=stops[i+1];return `rgb(${a.map((v,j)=>Math.round(v+(b[j]-v)*f)).join(',')})`}
+const lmin=Math.log10(5),lmax=Math.log10(81426);
+const heatCells=[];
+(function(){const h=$('heat');let html='<div></div>'+cols.map(c=>`<div class="ch">${c}</div>`).join('');
+  rows.forEach(([n,vals],r)=>{html+=`<div class="rh">${n}</div>`;vals.forEach((v,c)=>{
+    if(!v){html+=`<div class="c e" data-r="${r}" data-c="${c}"></div>`;return}
+    const t=(Math.log10(v)-lmin)/(lmax-lmin);html+=`<div class="c" data-r="${r}" data-c="${c}" style="background:${hcol(t)};color:${t>.82?'#fff':'#4A4370'}">${v>=10000?Math.round(v/1000)+'k':fmt(v)}</div>`})});
+  h.innerHTML=html;
+  h.querySelectorAll('.c').forEach(e=>heatCells.push({el:e,r:+e.dataset.r,c:+e.dataset.c}));
+  $('legbar').style.background=`linear-gradient(90deg,${[0,.33,.66,1].map(hcol).join(',')})`;
+})();
+const cellAt=(r,c)=>heatCells.find(x=>x.r===r&&x.c===c);
+const kCity=cellAt(0,2), kH=cellAt(10,7), kB=cellAt(10,2);
+kCity.el.textContent='81,426';
+
+/* ---------------- act 3b bars ---------------- */
+const BARS=[['Higher Ed','177,204 · 61% of NSW',39571,137633,'22.3% new'],['VET','83,848',23413,60435,'27.9% new'],['ELICOS','16,403 · English courses',8185,8218,'49.9% new']];
+const SCALE=700/177204;
+const barEls=BARS.map(([n,sub,a,b,sh],i)=>{const row=document.createElement('div');row.className='a';row.style.cssText=`left:660px;top:${396+i*146}px;width:1150px;height:90px`;
+  row.innerHTML=`<div class="bn a" style="left:0;top:4px">${n}<small>${sub}</small></div>
+   <div class="a" style="left:270px;top:6px;width:880px;height:70px">
+     <div class="seg sn" style="left:0;width:${a*SCALE}px;background:var(--pink)">${a>20000?fmt(a):''}</div>
+     <div class="seg sc" style="left:${a*SCALE+4}px;width:${b*SCALE}px;background:#B7AEDF;justify-content:flex-end">${b>20000?fmt(b):''}</div>
+     <span class="sh a mono" style="left:${(a+b)*SCALE+26}px;top:6px;font-size:${i===1?30:44}px;font-weight:600;color:var(--pink);white-space:nowrap">${sh}</span>
+   </div>`;
+  $('sc-act3b').appendChild(row);return {row,sn:row.querySelector('.sn'),sc:row.querySelector('.sc'),sh:row.querySelector('.sh'),wa:a*SCALE,wb:b*SCALE}});
+
+/* ---------------- act 4 ---------------- */
+const F6=lineChart($('fig6'),{x:[2019,2020,2021,2022,2023,2024,2025,'2026*'],min:70,max:135,ticks:[80,100,120],
+  series:[{name:'Enrolments',c:C.lav,data:[100.00,97.84,80.97,78.37,100.52,115.32,116.69,113.07],labels:[[3,'78.4',34]],endDy:30},
+          {name:'All Groups CPI',c:C.coral,data:[100.22,100.71,103.47,109.77,116.24,119.99,123.00,126.70],labels:[[6,'123.0',-18]],endDy:-6},
+          {name:'Rents CPI',c:C.blue,data:[99.79,97.34,95.42,96.24,103.29,111.07,114.88,117.62],labels:[[2,'95.4',34]],endDy:10}]});
+(function(){const X=F6.X,Y=F6.Y,x=X(6);
+  F6.extra.innerHTML=`<g id="f6gap"><rect x="${x-118}" y="${Y(123.0)-4}" width="104" height="${Y(116.69)-Y(123.0)+8}" rx="8" fill="#D95F7E22" stroke="#D95F7E" stroke-width="2"/>
+  <text x="${x-66}" y="${Y(123.0)-16}" text-anchor="middle" class="lbl" fill="#D95F7E">prices &gt; students</text></g>
+  <g id="f6cpi"><text x="${X(0)+20}" y="${Y(126)}" class="big-lbl" fill="#D95F7E">+22.7%</text><text x="${X(0)+20}" y="${Y(126)+26}" class="ax">All Groups CPI, 2019→2025</text></g>
+  <g id="f6rent"><text x="${X(2)+50}" y="${Y(126)}" class="big-lbl" fill="#6FA3E0">+15.1%</text><text x="${X(2)+50}" y="${Y(126)+26}" class="ax">Rents CPI, 2019→2025</text></g>`})();
+
+/* ---------------- plan ---------------- */
+const PC=[['When','Time the application','Read your intake against the policy timeline: MD111 caps, Genuine Student test.','Fig 4'],
+  ['Where','Pick an area','Not a whole city: shortlist one or two SA4s where your field is taught.','Fig 2–3'],
+  ['How much','Budget a buffer','Overall prices outran student numbers. Plan for rising costs, not one figure.','Fig 6'],
+  ['Now or later','Check your sector','See how much of your sector is new intake before reading “record high” as competition.','Fig 1 · Fig 5']];
+const pcEls=PC.map(([k,b,p,f],i)=>{const d=document.createElement('div');d.className='pcard a';d.style.left=(110+i*432)+'px';d.style.top='478px';
+  d.innerHTML=`<span class="k">${k}</span><b>${b}</b><p>${p}</p><span class="fg">${f}</span>
+  <svg class="a" style="right:16px;top:14px" width="46" height="46" viewBox="0 0 46 46"><circle cx="23" cy="23" r="20" fill="#EEEAFE" stroke="#8B7FE8" stroke-width="3"/><path d="M13 24 L20 31 L33 16" fill="none" stroke="#8B7FE8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1"/></svg>`;
+  $('sc-plan').appendChild(d);return {d,chk:d.querySelector('path')}});
+
+/* ---------------- land ---------------- */
+const EQ=['Study opportunity','Location','Visa timing','Affordability'];
+const eqEls=[];
+EQ.forEach((t,i)=>{if(i){const p=document.createElement('span');p.textContent='+';p.style.cssText='font-size:40px;font-weight:800;color:var(--pink)';$('leq').appendChild(p);eqEls.push(p)}
+  const c=document.createElement('span');c.textContent=t;c.style.cssText='background:#fff;border:2px solid var(--line);border-radius:999px;padding:10px 22px;font-size:28px;font-weight:700;color:var(--deep);box-shadow:0 10px 24px -14px #37305C88';$('leq').appendChild(c);eqEls.push(c)});
+
+/* ---------------- path helpers ---------------- */
+function alongPath(path,p){const L=path.getTotalLength();const a=path.getPointAtLength(L*cl(p));const b=path.getPointAtLength(Math.min(L,L*cl(p)+2));return {x:a.x,y:a.y,ang:Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI}}
+
+/* =================================================================== */
+const scenes={};
+const sceneEls={};
+Object.keys(TL.scenes).forEach(id=>{sceneEls[id]=$('sc-'+id)});
+
+scenes.open=t=>{
+  // plane
+  const pp=alongPath($('opathd'),cl((t-.2)/9));
+  st($('oplane'),cl((t-.2)/.4)*(1-cl((t-9)/.5)),pp.x,pp.y,1,pp.ang);
+  // clips
+  clips.forEach((c,i)=>{
+    const t0=S('o1')+i*.42;
+    const p=pr(t,t0,.5,E.back);
+    const drift=Math.sin(t*.6+i)*6;
+    let o=cl((t-t0)/.25)*(1-cl((t-S('o3'))/1.2));
+    st(c.el,o,0,drift+(1-p)*40,.85+.15*p,c.r+(1-p)*8);
+    c.el.style.filter=t>S('o3')?`blur(${(cl((t-S('o3'))/1.2)*6).toFixed(2)}px)`:'none';
+  });
+  // board
+  flapAt(OF1,t,[{t0:.35,text:'INTL STUDENTS',stag:.075,spin:.45}]);
+  flapAt(OF2,t,[{t0:.8,text:'RECORD HIGH',stag:.075,spin:.45},{t0:S('o4')+.05,text:'WHO ARRIVES?',stag:.07,spin:.35}]);
+  const mv=pr(t,S('o5')-.1,1.0,E.io);
+  st($('oboard'),cl(t/.3),0,-173*mv,1-.38*mv);
+  show($('otitle'),t,S('o5')+.15,{d:.8,dy:40});
+  show($('oteam'),t,S('o5')+.9,{d:.7,dy:20});
+};
+
+scenes.mei=t=>{
+  const sc=SC('mei');
+  // pass slides in
+  const p=pr(t,S('m1')-.25,.9,E.back);
+  st($('pass'),cl((t-S('m1')+.25)/.3),0,(1-p)*260,1,-6*(1-p)-1.5);
+  // undecided stamp
+  const sp=pr(t,Ee('m2')-.2,.35,E.out);
+  st($('undec'),cl((t-Ee('m2')+.2)/.12),0,0,1+1.6*(1-sp),-14);
+  show($('mq'),t,S('m3'),{t1:S('m8')-.1});
+  ['m4','m5','m6','m7'].forEach((id,i)=>{
+    const t0=S(id)-.05,dt=Math.max(0,t-t0);
+    const swing=16*Math.exp(-3.2*dt)*Math.cos(8.5*dt);
+    let o=cl(dt/.2)*(1-cl((t-S('m8')+.1)/.4));
+    st(tagEls[i],t<t0?0:o,(1-pr(t,t0,.45))*80,0,1,t<t0?0:swing);
+  });
+  // fee
+  show($('fee'),t,S('m8')+.15,{d:.6,dx:60,dy:0});
+  const fp=pr(t,S('m9')+.6,1.6,E.io);
+  $('feenum').textContent=fmt(Math.round(lerp(710,1600,fp)));
+  const cp=pr(t,S('m9')+2.2,.4,E.back);
+  st($('feechip'),cl((t-S('m9')-2.2)/.15),0,0,cp*1,0);
+  show($('cal'),t,S('m10')-.1,{d:.6,dx:60,dy:0});
+  monthEls.forEach((m,i)=>{m.style.strokeDashoffset=(1-pr(t,S('m10')+.3+i*.1,.18,E.lin)).toFixed(3)});
+  show($('calt'),t,S('m10')+1.6,{d:.4,dy:10});
+};
+
+scenes.noise=t=>{
+  const swap=S('n6')-.15;
+  const aOut=1-cl((t-swap)/.45);
+  st($('nA'),aOut,-(1-aOut)*80,0,1);
+  const fp=pr(t,SC('noise').s,.6);
+  st($('nface'),cl((t-SC('noise').s)/.3),0,0,.85+.15*fp+Math.sin(t*2.2)*.008);
+  st($('nq1'),cl((t-S('n1'))/.3),0,Math.sin(t*3)*6,1,Math.sin(t*2)*8);
+  st($('nq2'),cl((t-S('n1')-.2)/.3),0,Math.sin(t*3+1)*6,1,Math.sin(t*2+1)*8);
+  show($('nb1'),t,S('n2')-.05,{d:.5,s0:.6,dy:0,e:E.back});
+  show($('nb2'),t,S('n3')-.05,{d:.5,s0:.6,dy:0,e:E.back});
+  show($('nb3'),t,S('n4')-.05,{d:.5,s0:.6,dy:0,e:E.back});
+  show($('sawh'),t,S('n5')-.1,{d:.5});
+  show($('saw'),t,S('n5')-.1,{d:.6,dy:40});
+  const dt=Math.max(0,t-S('n5'));
+  const ang=11*Math.sin(dt*2.6)*Math.min(1,dt*1.5);
+  $('beam').setAttribute('transform',`rotate(${ang.toFixed(2)} 320 295)`);
+  // part B
+  const bIn=cl((t-swap)/.45);
+  st($('nB'),bIn,(1-bIn)*80,0,1);
+  show($('dan'),t,swap+.1,{d:.6,dx:-40,dy:0});
+  show($('deck'),t,swap+.3,{d:.6,dx:40,dy:0});
+  const mv=pr(t,S('n6')+1.4,1.1,E.io);
+  const arc=Math.sin(mv*Math.PI)*-90;
+  st($('mini'),cl((t-swap-.4)/.3),lerp(0,520,mv),lerp(0,10,mv)+arc,lerp(1,1.15,mv),lerp(-4,0,mv));
+  show($('decknote'),t,S('n6')+2.7,{d:.4,s0:.5,dy:0,e:E.back});
+  show($('capstd'),t,S('n7')-.2,{d:.6,dy:40});
+  capRows.forEach((c,i)=>{const t0=S('n7')+.3+i*.75;const n=Math.round(c.full.length*cl((t-t0)/.65));const s=c.full.slice(0,n);if(c.tt.textContent!==s)c.tt.textContent=s;
+    c.r.style.opacity=t>=t0-.05?1:.25});
+};
+
+scenes.data=t=>{
+  show($('dh'),t,SC('data').s+.1);
+  dcEls.forEach((d,i)=>{const t0=S('d1')+.1+i*.2;const p=pr(t,t0,.7,E.back);
+    const x=lerp(960-162-(110+i*344),0,p), y=lerp(700,0,p);
+    st(d,cl((t-t0)/.2),x,y,lerp(.7,1,p),lerp((i-2)*14,0,p))});
+  // agency highlight in d2
+  const hl=[[0,1,.15],[3,3,1.6],[2,4,2.9]];
+  dcEls.forEach((d,i)=>{let on=0;hl.forEach(([a,b,off])=>{if(i===a||i===b){const q=t-S('d2')-off;if(q>0&&q<1.2)on=Math.max(on,Math.sin(Math.PI*q/1.2))}});
+    d.style.boxShadow=`0 16px 30px -18px #37305C66, 0 0 0 ${(on*6).toFixed(1)}px #E578A9`});
+  // starting line
+  const sv=cl((t-S('d3')+.2)/.4);
+  st(slSvg,sv,0,(1-sv)*20);
+  const m=pr(t,S('d3')+1.8,1.0,E.io);
+  [['slb0',40,40,90,250],['slb1',170,190,90,100],['slb2',300,262,90,28]].forEach(([id,x,y,w,h],i)=>{
+    const r=$(id);const tx=lerp(x,560-12,m),ty=lerp(y,160-12,m),tw=lerp(w,24,m),th=lerp(h,24,m);
+    r.setAttribute('x',tx);r.setAttribute('y',ty);r.setAttribute('width',tw);r.setAttribute('height',th);r.setAttribute('rx',lerp(10,12,m));r.style.opacity=1-cl((m-.85)/.15)});
+  $('sldot').style.opacity=cl((m-.85)/.15);
+  ['sll0','sll1','sll2'].forEach((id,i)=>{$(id).style.strokeDashoffset=(1-pr(t,S('d3')+2.9+i*.25,1.3,E.io)).toFixed(3)});
+  $('slright').style.opacity=cl((t-S('d3')-1.5)/.4);
+  ['mc0','mc1','mc2'].forEach((id,i)=>show($(id),t,S('d3')+.4+i*.7,{d:.5,dx:40,dy:0}));
+  qsEls.forEach((q,i)=>{show(q,t,S('d4')+i*.15,{d:.5,dy:30});
+    if(i===0){const g=cl((t-S('d4')-1.0)/.3);q.style.background=g>0?`rgba(229,120,169,${(g*.22).toFixed(3)})`:'#fff';q.style.borderColor=g>.5?'#E578A9':'#DCD4EF';
+      const pulse=t>S('d4')+1?1+.04*Math.sin((t-S('d4')-1)*7):1;q.style.transform+=` scale(${pulse.toFixed(3)})`}});
+};
+
+scenes.act1=t=>{
+  qhAt('act1',t);
+  const c0=Ee('a1')+.3;
+  show($('a1img'),t,c0,{d:.6,dx:-40,dy:0});
+  show($('a1chart'),t,c0+.1,{d:.6,dy:30});
+  show($('a1cap'),t,c0+.5,{d:.5,dy:10});
+  // enrolments
+  drawSeries(F1.ser[0],pr(t,S('a2')+.6,2.4,E.io));
+  drawSeries(F1.ser[1],pr(t,S('a4')+.4,2.4,E.io));
+  st($('f1gap'),cl((t-S('a5'))/.4));
+  show($('f1up'),t,S('a5')+.1,{d:.45,s0:.5,dy:0,e:E.back});
+  show($('f1dn'),t,S('a6')+.1,{d:.45,s0:.5,dy:0,e:E.back});
+  st($('f1vs'),cl((t-S('a6')-.3)/.3));
+  show($('a1ban'),t,S('a7')+.1,{d:.5,s0:.7,dy:0,e:E.back});
+  // S1 -> S2
+  $('a1s2').style.opacity=cl((t-S('a7'))/.6);
+  $('a1sid').textContent=t>S('a7')+.3?'S2':'S1';
+  // metaphor
+  show($('meta'),t,S('a3')-.2,{d:.5,dy:30});
+  tdots.forEach((d,i)=>{const q=pr(t,S('a3')+.1+i*.035,.25,E.back);d.setAttribute('r',(7*q).toFixed(2));d.style.opacity=q>0?1:0});
+  const mp=pr(t,S('a4')-.1,1.3,E.io);
+  const px=lerp(560,400,mp),py=lerp(-40,110,mp);
+  $('mplane').setAttribute('transform',`translate(${px} ${py})`);
+  pdots.forEach((d,i)=>{const q=pr(t,S('a4')+1.0+i*.18,.6,E.out);const sx=400+(i-2)*6,sy=118;const ex=330+i*28,ey=196;
+    d.setAttribute('cx',lerp(sx,ex,q));d.setAttribute('cy',lerp(sy,ey,q)-Math.sin(q*Math.PI)*24);d.style.opacity=t>S('a4')+1.0+i*.18?1:0});
+  $('mt1').style.opacity=cl((t-S('a3')-.6)/.4);
+  $('mt2').style.opacity=cl((t-S('a4')-1.4)/.4);
+};
+
+scenes.act2a=t=>{
+  qhAt('act2a',t);
+  const c0=Ee('b1')+.3;
+  show($('mapc'),t,c0,{d:.7,dx:-40,dy:0});
+  show($('mh'),t,S('b2')-.05,{d:.6,dy:30});
+  show($('mcap'),t,c0+.4,{d:.5,dy:10});
+  const zin=pr(t,S('b3')-.1,1.2,E.io), zout=pr(t,S('b4')+.2,1.0,E.io);
+  const z=1+.9*zin-.9*zout;
+  st($('mapw'),1,0,0,z);
+  [$('ring1'),$('ring2')].forEach((r,i)=>{const on=t>S('b3')+.6&&t<S('b4')+.6;const ph=((t*1.1+i*.5)%1);
+    st(r,on?(1-ph)*.9:0,0,0,(.4+ph*1.2)/z)});
+  show($('m601'),t,S('b3')+.1,{d:.5,dy:24});
+  $('m601n').textContent=fmt(60.1*pr(t,S('b3')+.3,1.4,E.out),1)+'%';
+  show($('mbar'),t,S('b4')-.1,{d:.4,dy:10});
+  const w=880;
+  const g0=pr(t,S('b4'),.7,E.out),g1=pr(t,S('b4')+.5,.6,E.out),g2=pr(t,S('b4')+.9,.6,E.out);
+  const w0=w*.601*g0,w1=w*.257*g1,w2=(w*.142-8)*g2;
+  $('mb0').style.width=w0+'px';$('mb1').style.left=(w*.601+4)+'px';$('mb1').style.width=w1+'px';$('mb2').style.left=(w*.858+8)+'px';$('mb2').style.width=Math.max(0,w2)+'px';
+  [$('mb0'),$('mb1'),$('mb2')].forEach((e,i)=>e.style.opacity=[g0,g1,g2][i]>0?1:0);
+  show($('m858'),t,S('b4')+.6,{d:.5,dy:20});
+  $('m858n').textContent=fmt(85.8*pr(t,S('b4')+.7,1.2,E.out),1)+'%';
+};
+
+scenes.act2b=t=>{
+  qhAt('act2b',t);
+  const s0=SC('act2b').s;
+  show($('hth'),t,s0+.1,{d:.5,dy:16});
+  const dim1=cl((t-S('b6'))/.4), dim2=cl((t-S('b7'))/.4), dimEnd=cl((t-S('b8'))/.4);
+  heatCells.forEach(({el,r,c})=>{
+    const t0=s0+.2+r*.035+c*.045;const p=pr(t,t0,.4,E.back);
+    let o=cl((t-t0)/.2);
+    let hl=1;
+    const isCity=(r===0&&c===2), isOSW=(r===10&&(c===7||c===2));
+    if(dim2>0){hl=isOSW?1:lerp(1,.28,dim2*(1-dimEnd*.6))}
+    else if(dim1>0){hl=isCity?1:lerp(1,.28,dim1)}
+    let s=.4+.6*p;
+    if(isCity) s*=1+.22*dim1*(1-dim2);
+    if(isOSW) s*=1+.22*dim2*(1-dimEnd);
+    st(el,o*hl,0,0,s);
+    el.classList.toggle('ring',(isCity&&dim1>.5&&dim2<.5)||(isOSW&&dim2>.5&&dimEnd<.5));
+    el.style.zIndex=(isCity||isOSW)?3:1;
+  });
+  show($('hleg'),t,s0+.8,{d:.4,dy:10});
+  show($('h4img'),t,s0+.3,{d:.6,dx:40,dy:0});
+  show($('hc1'),t,S('b6')+.3,{d:.5,dx:30,dy:0});
+  show($('hc2'),t,S('b7')+.4,{d:.5,dx:30,dy:0});
+  const sp=pr(t,S('b8')+.35,.3,E.out);
+  st($('hstamp'),cl((t-S('b8')-.35)/.08),0,0,1+1.4*(1-sp),-5);
+  show($('hcap'),t,s0+.6,{d:.4,dy:10});
+};
+
+scenes.act3a=t=>{
+  qhAt('act3a',t);
+  const c0=Ee('c1')+.3;
+  show($('vcard'),t,c0,{d:.6,dx:-40,dy:0});
+  show($('vcap'),t,c0+.4,{d:.5,dy:10});
+  const rv=pr(t,S('c2')+.1,2.8,E.io);
+  $('vclip').style.clipPath=`inset(0 ${(100-rv*100).toFixed(2)}% 0 0)`;
+  st($('vscan'),rv>0&&rv<1?1:0,15+830*rv,0);
+  show($('vh'),t,S('c2')+1.2,{d:.6,dy:30});
+  ['c3','c4','c5'].forEach((id,i)=>{const t0=S(id)+.12;const p=pr(t,t0,.28,E.out);
+    const shake=(t>t0+.28&&t<t0+.5)?Math.sin((t-t0)*90)*3*(1-(t-t0-.28)/.22):0;
+    st($('vs'+i),cl((t-t0)/.06),shake,0,1+1.5*(1-p),[-2.5,1.8,-1.4][i]+(1-p)*-8)});
+  show($('vwarn'),t,S('c6')+.1,{d:.6,dy:24});
+};
+
+scenes.act3b=t=>{
+  qhAt('act3b',t);
+  const s0=SC('act3b').s;
+  show($('s6c'),t,s0+.2,{d:.6,dx:-40,dy:0});
+  show($('sbh'),t,s0+.15,{d:.6,dy:24});
+  show($('sbleg'),t,s0+.6,{d:.4,dy:10});
+  show($('sbcap'),t,s0+.6,{d:.4,dy:10});
+  barEls.forEach((b,i)=>{
+    const t0=S('c7')+.2+i*.3;
+    let o=cl((t-t0+.1)/.3);
+    const focus=t>S('c9')?(i===2?1:(i===0?.55:.35)):(t>S('c8')?(i===0?1:.35):1);
+    st(b.row,o*focus,0,0,1);
+    const g1=pr(t,t0,.7,E.out),g2=pr(t,t0+.45,.8,E.out);
+    b.sn.style.width=(b.wa*g1)+'px';b.sc.style.width=(b.wb*g2)+'px';
+  });
+  show(barEls[0].sh,t,S('c8')+1.4,{d:.45,s0:.4,dy:0,e:E.back});
+  show(barEls[1].sh,t,S('c9')+.2,{d:.45,s0:.4,dy:0,e:E.back});
+  show(barEls[2].sh,t,S('c9')+.5,{d:.45,s0:.4,dy:0,e:E.back});
+  show($('s6beat'),t,Ee('c9')+.1,{d:.5,dy:20});
+};
+
+scenes.act4=t=>{
+  qhAt('act4',t);
+  const c0=Ee('e1')+.3;
+  show($('s7c'),t,c0,{d:.6,dx:-40,dy:0});
+  show($('cpic'),t,c0+.1,{d:.6,dy:30});
+  show($('cpcap'),t,c0+.5,{d:.5,dy:10});
+  drawSeries(F6.ser[1],pr(t,S('e2')+.3,2.4,E.io));
+  show($('f6cpi'),t,S('e2')+2.4,{d:.45,s0:.6,dy:0,e:E.back});
+  drawSeries(F6.ser[2],pr(t,S('e3')+.1,1.8,E.io));
+  show($('f6rent'),t,S('e3')+1.2,{d:.45,s0:.6,dy:0,e:E.back});
+  drawSeries(F6.ser[0],pr(t,S('e4')-.1,1.8,E.io));
+  show($('f6gap'),t,S('e4')+1.6,{d:.4,s0:.8,dy:0});
+  // price tag swing
+  const t0=S('e5')-.1,dt=Math.max(0,t-t0);
+  const drop=pr(t,t0,.45,E.out);
+  const ang=t<t0?0:24*Math.exp(-1.9*dt)*Math.cos(6.5*dt);
+  st($('ptag'),cl(dt/.15)*(t>=t0?1:0),0,(1-drop)*-260,1,ang);
+  show($('buf'),t,S('e6')+.1,{d:.6,dy:30});
+  $('bufseg').style.width=(160*pr(t,S('e6')+1.2,1.0,E.out))+'px';
+};
+
+scenes.aha=t=>{
+  const s0=SC('aha').s;
+  const g=cl((t-S('h1'))/.5);
+  st($('glow'),g*(.75+.25*Math.sin(t*3)),0,0,.9+.1*g);
+  const conv=pr(t,S('h3')+.1,1.1,E.io);
+  const fin=cl((t-S('h4')+.1)/.6);
+  const ip=pr(t,s0+.05,.7,E.back);
+  st($('s8c'),cl((t-s0)/.3)*(1-fin*.88),0,lerp(0,-40,conv),lerp(.92,1,ip)*lerp(1,.82,conv));
+  const home=[[110,190],[1450,190],[110,560],[1450,560]], from=[[-500,-300],[2400,-300],[-500,1300],[2400,1300]];
+  const fw=324, gap=80, x0=(1920-(4*fw+3*gap))/2;
+  for(let i=0;i<4;i++){
+    const el=$('ln'+i);
+    const t0=S('h1')+.35+i*.28;const p=pr(t,t0,.8,E.out);
+    const hx=lerp(from[i][0],home[i][0],p),hy=lerp(from[i][1],home[i][1],p);
+    const tx=x0+i*(fw+gap)-18, ty=700-10;
+    let x=lerp(hx,tx,conv),y=lerp(hy,ty,conv);
+    const sh=(t>S('h2')+.1&&t<S('h2')+1.1)?Math.sin((t+i)*38)*7*Math.sin(Math.PI*(t-S('h2')-.1)):0;
+    st(el,cl((t-t0)/.2),x-home[i][0]+sh,y-home[i][1],lerp(1,.9,conv),lerp([-4,3,3,-4][i]*(1-p),0,conv));
+  }
+  for(let i=0;i<3;i++){const px=x0+(i+1)*fw+i*gap+gap/2-18, py=760;show($('plus'+i),t,S('h3')+1.0+i*.12,{d:.4,s0:.3,dy:0,e:E.back,x:px,y:py})}
+  show($('ahatxt'),t,S('h4')-.05,{d:.7,s0:.9,dy:20,e:E.out});
+};
+
+scenes.plan=t=>{
+  const s0=SC('plan').s;
+  show($('plt'),t,s0+.1,{d:.6,dy:24});
+  show($('s9c'),t,s0+.3,{d:.6,dx:40,dy:0});
+  ['p2','p3','p4','p5'].forEach((id,i)=>{show(pcEls[i].d,t,S(id)-.1,{d:.5,dy:40,e:E.back});
+    pcEls[i].chk.style.strokeDashoffset=(1-pr(t,S(id)+.5,.4,E.out)).toFixed(3)});
+  show($('pl1'),t,S('p6')-.1,{d:.5,dy:30});
+  show($('pl2'),t,S('p6')+.3,{d:.5,dy:30});
+  ['pi0','pi1','pi2'].forEach((id,i)=>show($(id),t,S('p6')+1.4+i*.75,{d:.4,s0:.6,dy:0,e:E.back}));
+  const hl=cl((t-S('p7'))/.4);
+  $('pl2').style.boxShadow=`0 0 0 ${(hl*6*(.7+.3*Math.sin(t*6))).toFixed(1)}px #D95F7E55`;
+};
+
+scenes.land=t=>{
+  const sc=SC('land'),dur=sc.e-sc.s,p=cl((t-sc.s)/dur);
+  st($('pano'),cl((t-sc.s+.3)/.6),-500*E.io(p),0,1+.06*p);
+  const lp=pr(t,sc.s+.2,Math.max(3,S('l2')+1.2-sc.s),E.io);
+  const pt=alongPath($('lpath'),lp);
+  st($('lplane'),cl((t-sc.s)/.4),pt.x,pt.y,lerp(1,.55,lp),pt.ang);
+  show($('lt1'),t,S('l1')-.1,{d:.7,dy:30});
+  show($('lt2'),t,S('l2')-.1,{d:.6,dy:30});
+  eqEls.forEach((e,i)=>show(e,t,S('l2')+.6+i*.14,{d:.4,s0:.6,dy:0,e:E.back}));
+  show($('llogo'),t,S('l3')-.05,{d:.6,s0:.7,dy:0,e:E.back});
+};
+
+scenes.credits=t=>{
+  show($('cr'),t,SC('credits').s+.2,{d:.8,dy:30});
+};
+
+/* =================================================================== */
+const order=Object.keys(TL.scenes);
+const subTxt=$('subtxt'),subs=$('subs');
+const actEls=[...document.querySelectorAll('#acts span')];
+const TOTAL=TL.total;
+// progress ticks
+(function(){const pr=$('prog');[['Problem','open'],['Data','data'],['Insights','act1'],['Plan','plan']].forEach(([n,id])=>{const s=document.createElement('span');s.className='tick';s.style.left=(TL.scenes[id].s/TOTAL*100)+'%';s.textContent=n;pr.appendChild(s)})})();
+
+function render(t){
+  // clouds
+  clouds.forEach(c=>{const x=((c.x+t*c.v)%(1920+c.w+200))-c.w-100;c.el.style.transform=`translate(${x.toFixed(1)}px,${(c.y+Math.sin(t*.3+c.x)*8).toFixed(1)}px)`});
+  let act=1;
+  order.forEach(id=>{
+    const sc=TL.scenes[id],el=sceneEls[id];
+    const fin=cl((t-sc.s+.3)/.6), fout=1-cl((t-sc.e+.3)/.6);
+    const o=id==='open'?fout:(id==='credits'?fin:fin*fout);
+    if(o<=0.001){if(el.style.visibility!=='hidden'){el.style.visibility='hidden';el.style.opacity=0}return}
+    el.style.visibility='visible';el.style.opacity=o.toFixed(3);
+    el.style.transform=`scale(${(1+.015*(1-fin)).toFixed(4)})`;
+    scenes[id](t);
+    if(t>=sc.s-.01&&t<sc.e)act=sc.act;
+  });
+  actEls.forEach(a=>a.classList.toggle('on',+a.dataset.a===act));
+  const inCred=t>=TL.scenes.credits.s;
+  const ho=1-cl((t-TL.scenes.credits.s+.3)/.5);
+  $('hud').style.opacity=ho;$('prog').style.opacity=ho;
+  // subtitles
+  let sub='';
+  for(let i=0;i<TL.order.length;i++){const g=TL.segs[TL.order[i]];const nx=i+1<TL.order.length?TL.segs[TL.order[i+1]].s:1e9;
+    if(t>=g.s-.05&&t<Math.min(g.e+.35,nx-.03)){sub=g.sub;break}}
+  if(subTxt.textContent!==sub)subTxt.textContent=sub;
+  subs.style.opacity=sub&&!inCred?1:0;
+  // progress
+  const pp=cl(t/TOTAL);
+  $('pfill').style.width=(pp*100)+'%';$('pplane').style.left=(pp*100)+'%';
+}
+window.render=render;
+window.TOTAL=TOTAL;
+
+/* ---------------- fit + playback ---------------- */
+const stage=$('stage');
+function fit(){const k=Math.min(innerWidth/1920,innerHeight/1080);stage.style.transform=`translate(${(innerWidth-1920*k)/2}px,${(innerHeight-1080*k)/2}px) scale(${k})`}
+const RENDER=/[?&]render/.test(location.search);
+if(RENDER){stage.style.transform='none'}else{fit();addEventListener('resize',fit)}
+
+async function ready(){
+  await document.fonts.ready;
+  await Promise.all([...document.images].map(i=>i.decode?i.decode().catch(()=>{}):0));
+  render(0);
+  window.__READY=true;
+}
+ready();
+
+if(!RENDER){
+  const aud=$('aud'),play=$('play');
+  const hasAudio=aud.getAttribute('src')&&aud.getAttribute('src').length>20;
+  play.hidden=false;
+  const mm=Math.floor(TOTAL/60),ss=Math.floor(TOTAL%60);
+  $('playlen').textContent=`${mm}:${String(ss).padStart(2,'0')} · CLICK TO PLAY · SOUND ON · SPACE = PAUSE · ←/→ = SKIP`;
+  let t0=null,paused=true,offset=0;
+  const now=()=>hasAudio?aud.currentTime:(paused?offset:offset+(performance.now()-t0)/1000);
+  function loop(){const t=now();render(Math.min(t,TOTAL));if(!paused&&t<TOTAL)requestAnimationFrame(loop);else if(t>=TOTAL){paused=true}}
+  function start(){play.hidden=true;paused=false;if(hasAudio){aud.play().catch(()=>{})}else{t0=performance.now()}requestAnimationFrame(loop)}
+  function toggle(){if(paused){if(!hasAudio)t0=performance.now();else aud.play();paused=false;requestAnimationFrame(loop)}else{if(hasAudio)aud.pause();else offset=now();paused=true}}
+  play.addEventListener('click',start);
+  stage.addEventListener('click',()=>{if(play.hidden)toggle()});
+  addEventListener('keydown',e=>{
+    if(e.code==='Space'){e.preventDefault();if(!play.hidden)start();else toggle()}
+    if(e.code==='ArrowRight'||e.code==='ArrowLeft'){const d=e.code==='ArrowRight'?5:-5;const nt=cl(now()+d,0,TOTAL);if(hasAudio)aud.currentTime=nt;else{offset=nt;t0=performance.now()}render(nt)}
+  });
+}
+})();
+</script>
+</body>
+</html>

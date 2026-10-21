@@ -1,0 +1,280 @@
+1
+00:00:02,400 --> 00:00:05,564
+International student numbers are at a record high.
+
+2
+00:00:05,684 --> 00:00:07,834
+You've probably seen that headline.
+
+3
+00:00:07,954 --> 00:00:09,885
+But it hides a simple question.
+
+4
+00:00:10,005 --> 00:00:11,741
+Who is actually arriving?
+
+5
+00:00:11,861 --> 00:00:15,902
+This is The Price of Arrival, a data story by DataLens.
+
+6
+00:00:16,602 --> 00:00:17,691
+Meet Mei.
+
+7
+00:00:17,811 --> 00:00:22,091
+She's 23, and she's thinking about a Master's degree in Sydney.
+
+8
+00:00:22,211 --> 00:00:24,100
+She has four big questions.
+
+9
+00:00:24,220 --> 00:00:26,359
+Is "record high" even about me?
+
+10
+00:00:26,479 --> 00:00:28,266
+Where would I study and live?
+
+11
+00:00:28,386 --> 00:00:30,218
+When is it safe to apply?
+
+12
+00:00:30,338 --> 00:00:31,866
+And can I afford it?
+
+13
+00:00:31,986 --> 00:00:34,080
+Getting this wrong is expensive.
+
+14
+00:00:34,200 --> 00:00:39,496
+The visa fee jumped from A$710 to A$1,600.
+
+15
+00:00:39,616 --> 00:00:42,319
+And bad timing could cost her a whole year.
+
+16
+00:00:43,219 --> 00:00:45,295
+And everyone has an opinion.
+
+17
+00:00:45,415 --> 00:00:47,353
+The news says: "record high".
+
+18
+00:00:47,473 --> 00:00:51,128
+Her agent says: "Apply early, the rules keep changing."
+
+19
+00:00:51,248 --> 00:00:54,044
+Her friends say: "Rent here is out of control."
+
+20
+00:00:54,164 --> 00:00:58,384
+Her head trusts the official numbers. But her heart trusts her friends.
+
+21
+00:00:58,504 --> 00:01:04,361
+We also made this story for agents like Daniel, who copy charts straight into client slides.
+
+22
+00:01:04,481 --> 00:01:08,133
+So every chart here says what it counts, and what it leaves out.
+
+23
+00:01:09,033 --> 00:01:12,094
+Our evidence comes from five public datasets.
+
+24
+00:01:12,214 --> 00:01:18,043
+From the Department of Education, Home Affairs, and the Australian Bureau of Statistics.
+
+25
+00:01:18,163 --> 00:01:26,386
+We give every line the same starting point, 2019 = 100, so big and small numbers can be compared fairly.
+
+26
+00:01:26,506 --> 00:01:29,721
+Now, let's answer Mei's questions, one by one.
+
+27
+00:01:30,921 --> 00:01:34,012
+Question 1: Is "record high" even about me?
+
+28
+00:01:34,132 --> 00:01:39,740
+Here's the trick. The headline counts enrolments. That's everyone who is already studying.
+
+29
+00:01:39,860 --> 00:01:42,571
+Think of it as everyone inside the airport.
+
+30
+00:01:42,691 --> 00:01:46,759
+But Mei cares about commencements: the people who are just landing.
+
+31
+00:01:46,879 --> 00:01:51,265
+Compared with 2019, enrolments are up 8.8%.
+
+32
+00:01:51,385 --> 00:01:54,866
+But new arrivals are down 17.6%.
+
+33
+00:01:54,986 --> 00:01:58,030
+The total came back. The new intake did not.
+
+34
+00:01:59,830 --> 00:02:02,674
+Question 2: Where would I study and live?
+
+35
+00:02:02,794 --> 00:02:04,694
+Sydney is not one place.
+
+36
+00:02:04,814 --> 00:02:10,033
+60.1% of known enrolments sit in just one area: City & Inner South.
+
+37
+00:02:10,153 --> 00:02:13,532
+The top three areas hold 85.8%.
+
+38
+00:02:14,132 --> 00:02:16,708
+And each area has its own subjects.
+
+39
+00:02:16,828 --> 00:02:21,083
+In the city, Business leads, with 81,426 students.
+
+40
+00:02:21,203 --> 00:02:26,817
+But in Outer South West, Health beats Business: 614 to 48.
+
+41
+00:02:26,937 --> 00:02:30,806
+One note: this shows where students study, not where they live.
+
+42
+00:02:32,406 --> 00:02:35,312
+Question 3: When is it safe to apply?
+
+43
+00:02:35,432 --> 00:02:40,402
+The visa grant rate goes up and down. But every big dip sits next to a date.
+
+44
+00:02:40,522 --> 00:02:44,159
+March 2024: the Genuine Student test.
+
+45
+00:02:44,279 --> 00:02:46,893
+July 2024: the visa fee more than doubles.
+
+46
+00:02:47,013 --> 00:02:49,402
+December 2024: new caps on enrolments (MD111).
+
+47
+00:02:49,522 --> 00:02:54,121
+Lining up in time does not prove cause. But it shows Mei what to watch.
+
+48
+00:02:54,921 --> 00:02:56,585
+Her sector matters too.
+
+49
+00:02:56,705 --> 00:03:02,963
+Higher Education carries the record headline. Yet only 22.3% of its students are new.
+
+50
+00:03:03,083 --> 00:03:05,941
+In English language courses (ELICOS), it's about half: 49.9%.
+
+51
+00:03:07,541 --> 00:03:09,899
+Question 4: Can I afford it?
+
+52
+00:03:10,019 --> 00:03:16,808
+From 2019 to 2025, overall prices in Sydney rose 22.7%.
+
+53
+00:03:16,928 --> 00:03:18,862
+Rents rose 15.1%.
+
+54
+00:03:18,982 --> 00:03:22,094
+So overall prices grew faster than the number of students.
+
+55
+00:03:22,214 --> 00:03:24,840
+But this is an index, not a price tag.
+
+56
+00:03:24,960 --> 00:03:29,774
+It can't give Mei a monthly budget. So the honest move is to plan a buffer.
+
+57
+00:03:31,274 --> 00:03:33,448
+And this is Mei's "aha" moment.
+
+58
+00:03:33,568 --> 00:03:36,663
+These four answers can't be judged one by one.
+
+59
+00:03:36,783 --> 00:03:40,339
+Place, timing, sector and cost have to work together.
+
+60
+00:03:40,459 --> 00:03:43,001
+The headline was only the starting point.
+
+61
+00:03:44,301 --> 00:03:45,922
+So here's Mei's plan.
+
+62
+00:03:46,042 --> 00:03:49,410
+Time the application against the policy timeline.
+
+63
+00:03:49,530 --> 00:03:51,706
+Pick an area, not a whole city.
+
+64
+00:03:51,826 --> 00:03:54,394
+Budget a buffer, not one fixed number.
+
+65
+00:03:54,514 --> 00:03:57,371
+And check how much of her sector is new students.
+
+66
+00:03:57,491 --> 00:04:03,379
+What she still needs: her own course fees, real rent quotes, and the next policy update.
+
+67
+00:04:03,499 --> 00:04:05,892
+The data can't decide those for her.
+
+68
+00:04:07,392 --> 00:04:11,760
+In the end, Mei doesn't decide because of one headline, or one number.
+
+69
+00:04:11,880 --> 00:04:14,453
+Sydney becomes a choice she can plan for.
+
+70
+00:04:14,573 --> 00:04:16,311
+That's the price of arrival.
+
